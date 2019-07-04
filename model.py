@@ -54,12 +54,12 @@ def log_density(x, mu, std, logstd):
 
 
 
-def discounted_r(data,gamma,gae:bool,lam=0.95):
+def discounted_r(data,gamma,gae:bool):
     R = 0
     r_lst = []
     if gae:
         for r in reversed(data):
-            R = r + lam * gamma * R
+            R = r + hp.lam * gamma * R
             r_lst.append(R)
         r_lst.reverse()
     else:
