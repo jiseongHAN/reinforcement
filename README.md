@@ -19,8 +19,8 @@
 
 ## 2. Curiosity driven exploration
 * TODO
-  - Study : **~ing**
+  - Study : **DONE**
   
-  - Understanding from other code : **~ing**
+  - Understanding from other code : **Now**
   
-  - make own Code : **~ing**
+  - make own Code : **next week**
