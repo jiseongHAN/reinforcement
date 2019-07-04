@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -67,3 +68,10 @@ def discounted_r(data,gamma,gae:bool,lam=0.95):
             r_lst.append(R)
         r_lst.reverse()
     return r_lst
+
+
+def norm_state(state):
+    mean = np.mean(state)
+    std = np.std(state)
+    state = (state-mean) / std
+    return state
