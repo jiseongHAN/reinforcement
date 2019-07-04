@@ -5,20 +5,22 @@
 
 ## 1. PPO with Continuous action space
 * TODO
-  > base-code : **DONE**
+  - base-code : **DONE**
   
-  > use argparse : 
+  - use argparse : 
   
-  > add mlp model : **DONE**
+  - add mlp model : **DONE**
   
-  > add CNN model : 
+  - add CNN model : 
   
-  > add lstm or gru model :
+  - add lstm or gru model :
   
 
 
 ## 2. Curiosity driven exploration
 * TODO
-  > Study : **~ing**
-  > Understanding from other code : **~ing**
-  > make own Code : **~ing**
+  - Study : **~ing**
+  
+  - Understanding from other code : **~ing**
+  
+  - make own Code : **~ing**
