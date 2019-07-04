@@ -42,14 +42,14 @@ for _ in range(hp.iter_max):
         s = s_prime
         if done:
             break
-    if len(buffer) > 2000:
-        loss = train(actor,critic,buffer,actor_optim,critic_optim)
-        loss_lst.append(loss)
-        n_train += 1
-        buffer = []
-    if score > 200.0:
-        print('Clear!!')
-        break
+      if len(buffer) > 2000:
+          loss = train(actor,critic,buffer,actor_optim,critic_optim)
+          loss_lst.append(loss)
+          n_train += 1
+          buffer = []
+#     if score > 200.0:
+#         print('Clear!!')
+#         break
     print('#{} : 총 점수 : {} 총 스텝 : {}'.format(n_train,score,step))
     score = 0.0
     step = 0
