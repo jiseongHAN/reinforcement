@@ -35,6 +35,7 @@ class MarioEnv():
         self.stack_frame = stack_frame
         self.env = gym_super_mario_bros.make(env_id)
         self.env = JoypadSpace(self.env,COMPLEX_MOVEMENT)
+        self.n_action = self.env.action_space.n
         self.env = SkippedEnv(self.env,skip)
         self.dummy = np.zeros((self.stack_frame,self.h,self.w))
         self.box = deque(maxlen=stack_frame)
@@ -54,16 +55,13 @@ class MarioEnv():
         return obs
 
     def run(self,actions): # s, a, r, s_prime, done_mask
-        s = self.reset()
-        done = False
-        while not done:
-            s_prime,r,done,info = self.env.step(actions)
-            s_prime = self.prepro(s_prime)
-            box = s.append(s_prime)
-            done_mask = 0 if done else 1
-            data = (s,actions,r,box,done_mask)
-            s = box
-        pass
+        s = self.box.copy()
+        s_prime,r,done,info = self.env.step(actions)
+        s_prime = self.prepro(s_prime)
+        self.box.append(s_prime)
+        done_mask = 0 if done else 1
+        return s, actions, r, self.box, done_mask
+
 
 
 
