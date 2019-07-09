@@ -21,6 +21,18 @@
 * TODO
   - Study : **DONE**
   
-  - Understanding from other code : **Now**
+  - Understanding from other code : **~ing**
   
-  - make own Code : **next week**
+  - make own Code : **~ing**
+  
+ 
+## 3. Random Network Distillation
+* TODO
+  - Study : **Sooner**
+  
+  - Implementaion Code : **or**
+  
+  - Make my own Code : **Later**
+  
+
+## 4. I don't know
