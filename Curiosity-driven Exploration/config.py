@@ -1,0 +1,12 @@
+env = 'SuperMarioBros-v0'
+height = 84
+width = 84
+stacked_frame = 4
+skip = 6
+gamma = 0.99
+lam = 0.98
+eps = 0.2
+lr = 0.0002
+epoch = 10
+batch_size = 128
+hidden = 512
