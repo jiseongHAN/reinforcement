@@ -14,7 +14,9 @@
   
   - add lstm or gru model :
   
-
+  - add tensorboard to visualization : **Studying tensorboard now**
+   
+  - add save model process : **Coming Soooooooon**
 
 ## 2. Curiosity driven exploration
 * TODO
