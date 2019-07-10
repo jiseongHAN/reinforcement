@@ -23,7 +23,9 @@
   
   - Understanding from other code : **~ing**
   
-  - make own Code : **~ing**
+  - Understanding ICM ***important**
+  
+  - make own Code : **debugging**
   
  
 ## 3. Random Network Distillation
