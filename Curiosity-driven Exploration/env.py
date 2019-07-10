@@ -5,6 +5,7 @@ from nes_py.wrappers import JoypadSpace
 from gym_super_mario_bros.actions import COMPLEX_MOVEMENT
 import numpy as np
 from collections import deque
+import config as cf
 
 class SkippedEnv(gym.Wrapper):
     def __init__(self,env,skip):
@@ -26,42 +27,10 @@ class SkippedEnv(gym.Wrapper):
     def reset(self, **kwargs):
         return self.env.reset(**kwargs)
 
-
+# TODO : env.render() 추가
 # TODO : env에서 액션부분 떼어 버리기 + stack 함수 만들기 / 하나로 합치는 부분 고민
-class MarioEnv():
-    def __init__(self,env_id:str,stack_frame:int,h:int,w:int,skip:int):
-        self.h = h
-        self.w = w
-        self.stack_frame = stack_frame
-        self.env = gym_super_mario_bros.make(env_id)
-        self.env = JoypadSpace(self.env,COMPLEX_MOVEMENT)
-        self.n_action = self.env.action_space.n
-        self.env = SkippedEnv(self.env,skip)
-        self.dummy = np.zeros((self.stack_frame,self.h,self.w))
-        self.box = deque(maxlen=stack_frame)
 
-    def prepro(self,state):
-        state = cv2.cvtColor(state, cv2.COLOR_RGB2GRAY)
-        state = cv2.resize(state,(self.h,self.w)) / 255.0
-        return state
-
-    def get_init_state(self,state):
-        for i in range(self.stack_frame):
-            self.box.append(self.prepro(state))
-        return self.box
-
-    def reset(self): # reset env -> return (f,w,h)
-        obs = self.get_init_state(self.env.reset())
-        return obs
-
-    def run(self,actions): # s, a, r, s_prime, done_mask
-        s = self.box.copy()
-        s_prime,r,done,info = self.env.step(actions)
-        s_prime = self.prepro(s_prime)
-        self.box.append(s_prime)
-        done_mask = 0 if done else 1
-        return s, actions, r, self.box, done_mask
-
-
-
-
+def prepro(state):
+    state = cv2.cvtColor(state, cv2.COLOR_RGB2GRAY)
+    state = cv2.resize(state,(cf.height,cf.width)) / 255.0
+    return state
