@@ -5,7 +5,6 @@ from torch.distributions.categorical import Categorical
 import torch.optim as optim
 import numpy as np
 import config as cf
-
 def swish(x):
     ret = x * torch.sigmoid(x)
     return ret
@@ -25,11 +24,11 @@ class CNNActor(nn.Module):
         nn.init.xavier_uniform_(self.conv3.weight)
 
     def forward(self,x,dim=1):
-        x = swish(self.conv1(x))
-        x = swish(self.conv2(x))
-        x = swish(self.conv3(x))
+        x = F.leaky_relu(self.conv1(x))
+        x = F.leaky_relu(self.conv2(x))
+        x = F.leaky_relu(self.conv3(x))
         x = x.view(-1,18496)
-        x = swish(self.fc1(x))
+        x = F.leaky_relu(self.fc1(x))
         prob = F.softmax(self.pi(x),dim = dim)
         return prob
 
@@ -48,11 +47,11 @@ class CNNCritic(nn.Module):
         nn.init.xavier_uniform_(self.conv3.weight)
 
     def forward(self,x):
-        x = swish(self.conv1(x))
-        x = swish(self.conv2(x))
-        x = swish(self.conv3(x))
+        x = F.leaky_relu(self.conv1(x))
+        x = F.leaky_relu(self.conv2(x))
+        x = F.leaky_relu(self.conv3(x))
         x = x.view(-1,18496)
-        x = swish(self.fc1(x))
+        x = F.leaky_relu(self.fc1(x))
         v = self.fc_v(x)
         return v
 
@@ -81,33 +80,33 @@ class ICMModel(nn.Module):
 
 
     def feature(self,x):
-        x = swish(self.conv1(x))
-        x = swish(self.conv2(x))
-        x = swish(self.conv3(x))
+        x = F.leaky_relu(self.conv1(x))
+        x = F.leaky_relu(self.conv2(x))
+        x = F.leaky_relu(self.conv3(x))
         x = x.view(-1,18496)
         x = self.fc1(x)
         return x
     def inverse(self,x):
-        x = swish(self.inv(x))
+        x = F.leaky_relu(self.inv(x))
         x = F.softmax(self.fc_pi(x),1)
         return x
     def residual(self,x):
-        x = swish(self.res(x))
+        x = F.leaky_relu(self.res(x))
         x = self.res1(x)
         x = [x]
         x = x * 8
         return x
     def forward_net1(self,x):
-        x = swish(self.res(x))
+        x = F.leaky_relu(self.res(x))
         return x
 
     def forward_net2(self,x):
         return self.res(x)
-
+#TODO : cuda 사용시와 사용 안하는 경우 두가지
     def forward(self,inputs):
         state, action, s_prime= inputs
-        action = torch.LongTensor(action)
-        action_onehot = torch.FloatTensor(
+        action = torch.cuda.LongTensor(action)
+        action_onehot = torch.cuda.FloatTensor(
             len(action), self.n_action)
         action_onehot.zero_()
         action_onehot.scatter_(1, action.view(len(action), -1), 1)
