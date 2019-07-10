@@ -22,64 +22,68 @@ from tqdm import tqdm
 ### agent
 # TODO : agent class로 합치기?
 #### make batch from memory
-
-def train_net(memory, actor, critic, icm, optimizer):
+# actor_optimizer, critic_optimizer, icm_optimizer
+def train_net(memory, actor, critic, icm,optimizer):
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     mse = nn.MSELoss()
-    idx = np.arange(len(memory))
-    random.shuffle(idx)
-    s_lst, a_lst, r_lst, s_prime_lst, done_mask_lst = [], [], [], [], []
-    for data in memory:
-        s, a, r, s_prime, done_mask = data
-        s_lst.append(s)
-        a_lst.append([a])
-        r_lst.append([r])
-        s_prime_lst.append(s_prime)
-        done_mask_lst.append([done_mask])
-
-    s = torch.tensor(s_lst,dtype = torch.float)
-    a = torch.tensor(a_lst)
-    r = torch.tensor(r_lst, dtype = torch.float)
-    s_prime = torch.tensor(s_prime_lst, dtype = torch.float)
-    done_mask = torch.tensor(done_mask_lst, dtype = torch.float)
-
-    old_p = actor(s)
-    old_policy = old_p.gather(1,a)
-    real_feature, pred_feature, pred_action = icm((s,a,s_prime))
-    intrinsic_reward  = (real_feature - pred_feature).pow(2).sum(-1).unsqueeze(-1)
-    intrinsic_reward = normalization(intrinsic_reward)
-    total_reward = r + intrinsic_reward
-    real_feature = normalization(real_feature)
-    pred_feature = normalization(pred_feature)
-
-
+    random.shuffle(memory)
     for n in tqdm(range(len(memory) // cf.batch_size)):
-        s_b=s[idx[n*cf.batch_size:(n+1)*cf.batch_size]]
-        old_pb = old_policy[idx[n*cf.batch_size:(n+1)*cf.batch_size]]
-        s_prime_b = s_prime[idx[n*cf.batch_size:(n+1)*cf.batch_size]]
-        reward_b = total_reward[idx[n*cf.batch_size:(n+1)*cf.batch_size]]
-        done_mask_b = done_mask[idx[n*cf.batch_size:(n+1)*cf.batch_size]]
-        a_b = a[idx[n*cf.batch_size:(n+1)*cf.batch_size]]
+        s_lst, a_lst, r_lst, s_prime_lst, done_lst, prob_lst = [], [], [], [], [], []
+        for transition in memory[n * cf.batch_size:(n + 1) * cf.batch_size]:
+            s, a, r, s_prime, done, prob = transition
+            s_lst.append(s)
+            a_lst.append([a])
+            r_lst.append([r])
+            s_prime_lst.append(s_prime)
+            done_lst.append([done])
+            prob_lst.append([prob])
 
+        s = torch.tensor(s_lst, dtype=torch.float).to(device)
+        a = torch.tensor(a_lst).to(device)
+        r = torch.tensor(r_lst, dtype=torch.float).to(device)
+        s_prime = torch.tensor(s_prime_lst, dtype=torch.float).to(device)
+        done = torch.tensor(done_lst, dtype=torch.float).to(device)
+        prob = torch.tensor(prob_lst, dtype=torch.float).to(device)
 
+        real_feature, pred_feature, pred_action = icm((s, a, s_prime))
+        intrinsic_reward = (real_feature - pred_feature).pow(2).sum(-1).unsqueeze(-1)
+        intrinsic_reward = normalization(intrinsic_reward)
+        total_reward = r + intrinsic_reward
+        pred_action = pred_action.gather(1,a)
+
+        old_v = critic(s)
+        td_target = total_reward + cf.gamma * critic(s_prime) * done
+        delta = (td_target - old_v) * done
+        adv = discounted_r(delta,gamma = cf.gamma, gae= True)
+        adv = normalization(adv).to(device)
+        # adv = adv.to(device)
+        for _ in range(cf.epoch):
     #### calculate td_target, delta, adv
-    for _ in range(cf.epoch):
-        v_prime = critic(s_prime_b)
-        v = critic(s_b)
-        td_target = reward_b + cf.gamma * v_prime * done_mask_b
-        delta = (td_target - v) * done_mask_b
-        adv = discounted_r(delta, gamma=cf.gamma, gae= True)
-        adv = normalization(adv) # TODO : adv 계산 더 빨리 하는 방법
-        pi = actor(s_b)
-        pi_a = pi.gather(1,a_b)
-        ratio = torch.exp(torch.log(pi_a) - torch.log(old_pb))
-        surr = ratio.squeeze() * adv
-        clip = torch.clamp(surr, 1 - cf.eps, 1 + cf.eps)
-        actor_loss = -torch.min(clip,surr).mean()
-        critic_loss = mse(td_target.detach(),v)
-        inv_loss = mse(pred_action,old_p)
-        forward_loss = mse(pred_feature, real_feature)
-        loss = actor_loss + 0.5 * critic_loss + inv_loss + forward_loss
+            new_v = critic(s)
+            pi = actor(s)
+            pi_a = pi.gather(1,a)
+            ratio = torch.exp(torch.log(pi_a) - torch.log(prob))
+            surr = ratio.squeeze() * adv
+            clip = torch.clamp(surr, 1 - cf.eps, 1 + cf.eps)
+            actor_loss = -torch.min(clip,surr).mean()
+            critic_loss = mse(td_target.detach(),new_v)
+            inv_loss = mse(pred_action, prob.detach())
+            forward_loss = mse(pred_feature, real_feature)
+            loss = actor_loss + 0.5 * critic_loss+ 0.5 * inv_loss + 0.5 * forward_loss
+            # actor_optimizer.zero_grad()
+            # loss.backward(retain_graph = True)
+            # actor_optimizer.step()
+            #
+            # critic_optimizer.zero_grad()
+            # loss.backward(retain_graph = True)
+            # critic_optimizer.step()
+            # #
+            # icm_optimizer.zero_grad()
+            # loss.backward(retain_graph = True)
+            # icm_optimizer.step()
+            # torch.cuda.empty_cache()
 
-        optimizer.zero_grad()
-        loss.backward(retain_graph = True)
-        optimizer.step()
+            optimizer.zero_grad()
+            loss.backward(retain_graph=True)
+            optimizer.step()
+
