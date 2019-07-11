@@ -16,7 +16,7 @@
   
   - add tensorboard to visualization : **Studying tensorboard now**
    
-  - add save model process : **Coming Soooooooon**
+  - add save model : **Coming Soooooooon**
 
 ## 2. Curiosity driven exploration
 * TODO
@@ -26,7 +26,7 @@
   
   - Understanding ICM : ***important**
   
-  - make own Code : **debugging**
+  - make own Code : **~ing**
   
  
 ## 3. Random Network Distillation
