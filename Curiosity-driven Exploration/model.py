@@ -132,3 +132,64 @@ class ICMModel(nn.Module):
         real_next_state_feature = encode_next_state
         return real_next_state_feature, pred_next_state_feature, pred_action
 
+
+
+
+###########
+class NatureHead(nn.Module):
+    ''' DQN Nature 2015 paper
+        input: [None, 84, 84, 4]; output: [None, 3136] -> [None, 512];
+    '''
+
+    def __init__(self, n):
+        super(NatureHead, self).__init__()
+        self.conv1 = nn.Conv2d(4,32,4,2)
+        self.conv2 = nn.Conv2d(32,64,4,2)
+        self.conv3 = nn.Conv2d(64,64,3,1)
+        self.fc1 = nn.Linear(18496, cf.hidden)
+        self.output_size = cf.hidden
+
+    def forward(self, x):
+        x = F.leaky_relu(self.conv1(x))
+        x = F.leaky_relu(self.conv2(x))
+        x = F.leaky_relu(self.conv3(x))
+        ret = x.view(-1,18496)
+        return ret
+
+
+class ICM(torch.nn.Module):
+    def __init__(self, action_space, state_size, num_inputs=4, cnn_head=True):
+        super(ICM, self).__init__()
+        if cnn_head:
+            self.head = NatureHead(num_inputs)
+        if action_space.__class__.__name__ == "Discrete":
+            action_space = action_space.n
+        else:
+            action_space = action_space.shape[0] * 2
+        self.forward_model = nn.Sequential(
+            nn.Linear(state_size + action_space, 256),
+            nn.ReLU(),
+            nn.Linear(256, state_size))
+        self.inverse_model = nn.Sequential(
+            nn.Linear(state_size * 2, 256),
+            nn.ReLU(),
+            nn.Linear(256, action_space),
+            nn.ReLU())
+
+    def forward(self, state, next_state, action):
+        if hasattr(self, 'head'):
+            phi1 = self.head(state)
+            phi2 = self.head(next_state)
+        else:
+            phi1 = state
+            phi2 = next_state
+        phi2_pred = self.forward_model(torch.cat([action, phi1], 1))
+        action_pred = F.softmax(self.inverse_model(torch.cat([phi1, phi2], 1)), -1)
+        return action_pred, phi2_pred, phi1, phi2
+
+
+def get_icm_loss(states, next_states, actions, action_probs,icm):
+    action_pred, phi2_pred, phi1, phi2 =  icm(states, next_states, action_probs)
+    inverse_loss = F.cross_entropy(action_pred, actions.view(-1))
+    forward_loss = 0.5 * F.mse_loss(phi2_pred, phi2.detach(), reduce=False).sum(-1).mean()
+    return inverse_loss, forward_loss
