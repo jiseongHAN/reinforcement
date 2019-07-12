@@ -4,6 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import math
 import hp
+import os
 class Actor(nn.Module):
     def __init__(self, num_inputs, num_outputs):
         self.num_inputs = num_inputs
@@ -75,3 +76,17 @@ def norm_state(state):
     std = np.std(state)
     state = (state-mean) / std
     return state
+
+def model_save(model, model_path, name):
+    try:
+        if os.path.isdir(model_path):
+            torch.save(model.state_dict(), model_path+ '/{}.pth'.format(str(name)))
+        else:
+            os.mkdir(model_path)
+            torch.save(model.state_dict(), model_path + '/{}.pth'.format(str(name)))
+    except:
+        print('Save failed')
+
+        #print(os.path.exists("/home/el/myfile.txt"))
+
+# TODO : replace activation function tanh -> swish : f(x) = x*sigmoid(x)
