@@ -9,13 +9,11 @@ there is a Beta in the paper but I don't know why there is no beta in implementa
 Agent has to calculate td_target, adv, pred_action, pred_feature from (s,a,r,s_prime,done_mask)
 '''
 # TODO : tensorboard로 visualization
-from env import *
 from model import *
 from utils import *
 import config as cf
 import torch
 import random
-import numpy as np
 from tqdm import tqdm
 
 ### agent
@@ -44,12 +42,10 @@ def train_net(memory, actor, critic, icm,optimizer):
         s_prime = torch.tensor(s_prime_lst, dtype=torch.float).to(device)
         done = torch.tensor(done_lst, dtype=torch.float).to(device)
         prob = torch.tensor(prob_lst, dtype=torch.float).to(device)
-
-        # real_feature, pred_feature, pred_action = icm((s, a, s_prime))
-        # intrinsic_reward = (real_feature - pred_feature).pow(2).sum(-1).unsqueeze(-1)
-        # intrinsic_reward = normalization(intrinsic_reward)
-        # total_reward = r + intrinsic_reward
-        total_reward = r
+        action_probs = actor(s)
+        inverse_loss, forward_loss, intrinsic_reward = get_icm_loss(s, s_prime, a, action_probs,icm)
+        total_reward = r + intrinsic_reward.unsqueeze(-1)
+        # total_reward = r
         # pred_action = pred_action.gather(1,a)
 
         old_v = critic(s)
@@ -68,10 +64,8 @@ def train_net(memory, actor, critic, icm,optimizer):
             clip = torch.clamp(surr, 1 - cf.eps, 1 + cf.eps) * adv
             actor_loss = -torch.min(clip,surr).mean()
             critic_loss = mse(td_target.detach(),new_v)
-            # inv_loss = mse(pred_action, prob.detach())
-            # forward_loss = mse(pred_feature, real_feature)
             loss = actor_loss + 0.5 * critic_loss
-            # loss = actor_loss + 0.5 * critic_loss+ 0.5 * inv_loss + 0.5 * forward_loss
+            loss = actor_loss + 0.5 * critic_loss+ inverse_loss + forward_loss
             # actor_optimizer.zero_grad()
             # loss.backward(retain_graph = True)
             # actor_optimizer.step()
@@ -88,7 +82,7 @@ def train_net(memory, actor, critic, icm,optimizer):
             optimizer.zero_grad()
             loss.backward(retain_graph=True)
             optimizer.step()
-            print(loss)
+            # print(loss)
 
 
 
