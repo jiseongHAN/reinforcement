@@ -10,7 +10,7 @@
   
   - add mlp model : **DONE**
   
-  - add CNN model : **TODO : Get model from Curiosity driven exploration**
+  - add CNN model : **Get model from Curiosity driven exploration**
   
   - add lstm or gru model :
   
