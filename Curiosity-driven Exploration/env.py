@@ -1,10 +1,8 @@
-import cv2
 import gym_super_mario_bros
 import gym
 from nes_py.wrappers import JoypadSpace
 from gym_super_mario_bros.actions import COMPLEX_MOVEMENT, RIGHT_ONLY, SIMPLE_MOVEMENT
 import numpy as np
-from collections import deque
 import config as cf
 
 class SkippedEnv(gym.Wrapper):
@@ -35,8 +33,8 @@ class FlagReward(gym.Wrapper):
         obs, reward, done, info = self.env.step(action)
         reward += (info['score'] - self.score) / 100.
         self.score = info['score']
-        if info['life'] <= 1:
-            done = True
+        # if info['life'] <= 1:
+        #     done = True
         if done:
             if info['flag_get']:
                 reward += 15
@@ -47,15 +45,6 @@ class FlagReward(gym.Wrapper):
     def reset(self):
         self.score = 0.0
         return self.env.reset()
-
-
-# TODO : env.render() 추가
-# TODO : env에서 액션부분 떼어 버리기 + stack 함수 만들기 / 하나로 합치는 부분 고민
-
-def prepro(state):
-    state = cv2.cvtColor(state, cv2.COLOR_RGB2GRAY)
-    state = cv2.resize(state,(cf.height,cf.width)) / 255.0
-    return state
 
 def env_make(env_id, action):
     mario = gym_super_mario_bros.make(env_id)
