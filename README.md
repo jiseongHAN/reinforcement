@@ -10,13 +10,13 @@
   
   - add mlp model : **DONE**
   
-  - add CNN model : 
+  - add CNN model : **TODO : Get model from Curiosity driven exploration**
   
   - add lstm or gru model :
   
   - add tensorboard to visualization : **Studying tensorboard now**
    
-  - add save model : **Coming Soooooooon**
+  - add save model : **Done**
 
 ## 2. Curiosity driven exploration
 * TODO
