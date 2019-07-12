@@ -24,7 +24,7 @@
   
   - Understanding from other code : **~ing**
   
-  - Understanding ICM : ***important**
+  - Understanding ICM : **done(?)**
   
   - make own Code : **~ing**
   
