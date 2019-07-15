@@ -24,11 +24,11 @@ class CNNActor(nn.Module):
         nn.init.xavier_uniform_(self.conv3.weight)
 
     def forward(self,x,dim=1):
-        x = F.leaky_relu(self.conv1(x))
-        x = F.leaky_relu(self.conv2(x))
-        x = F.leaky_relu(self.conv3(x))
+        x = torch.tanh(self.conv1(x))
+        x = torch.tanh(self.conv2(x))
+        x = torch.tanh(self.conv3(x))
         x = x.view(-1,18496)
-        x = F.leaky_relu(self.fc1(x))
+        x = torch.tanh(self.fc1(x))
         prob = F.softmax(self.pi(x),dim = dim)
         return prob
 
@@ -48,11 +48,11 @@ class CNNCritic(nn.Module):
         nn.init.xavier_uniform_(self.conv3.weight)
 
     def forward(self,x):
-        x = F.leaky_relu(self.conv1(x))
-        x = F.leaky_relu(self.conv2(x))
-        x = F.leaky_relu(self.conv3(x))
+        x = torch.tanh(self.conv1(x))
+        x = torch.tanh(self.conv2(x))
+        x = torch.tanh(self.conv3(x))
         x = x.view(-1,18496)
-        x = F.leaky_relu(self.fc1(x))
+        x = torch.tanh(self.fc1(x))
         v = self.fc_v(x)
         return v
 
@@ -67,9 +67,9 @@ class NatureHead(nn.Module):
         self.output_size = cf.hidden
 
     def forward(self, x):
-        x = F.leaky_relu(self.conv1(x))
-        x = F.leaky_relu(self.conv2(x))
-        x = F.leaky_relu(self.conv3(x))
+        x = torch.tanh(self.conv1(x))
+        x = torch.tanh(self.conv2(x))
+        x = torch.tanh(self.conv3(x))
         ret = x.view(-1,18496)
         return ret
 
@@ -81,13 +81,13 @@ class ICM(torch.nn.Module):
             self.head = NatureHead()
 
         self.forward_model = nn.Sequential(
-            nn.Linear(state_size + action_space, 256),
+            nn.Linear(state_size + action_space, cf.hidden),
             nn.ReLU(),
-            nn.Linear(256, state_size))
+            nn.Linear(cf.hidden, state_size))
         self.inverse_model = nn.Sequential(
-            nn.Linear(state_size * 2, 256),
+            nn.Linear(state_size * 2, cf.hidden),
             nn.ReLU(),
-            nn.Linear(256, action_space),
+            nn.Linear(cf.hidden, action_space),
             nn.ReLU())
 
     def forward(self, state, next_state, action):
