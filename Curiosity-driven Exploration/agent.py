@@ -22,9 +22,13 @@ from tqdm import tqdm
 #### make batch from memory
 # actor_optimizer, critic_optimizer, icm_optimizer
 def train_net(memory, actor, critic, icm,optimizer):
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    if cf.gpu:
+        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    else:
+        device = 'cpu'
     mse = nn.MSELoss()
     random.shuffle(memory)
+    returns = []
     for n in tqdm(range(len(memory) // cf.batch_size)):
         s_lst, a_lst, r_lst, s_prime_lst, done_lst, prob_lst = [], [], [], [], [], []
         for transition in memory[n * cf.batch_size:(n + 1) * cf.batch_size]:
@@ -64,7 +68,7 @@ def train_net(memory, actor, critic, icm,optimizer):
             clip = torch.clamp(surr, 1 - cf.eps, 1 + cf.eps) * adv
             actor_loss = -torch.min(clip,surr).mean()
             critic_loss = mse(td_target.detach(),new_v)
-            loss = actor_loss + 0.5 * critic_loss
+            # loss = actor_loss + 0.5 * critic_loss
             loss = actor_loss + 0.5 * critic_loss+ inverse_loss + forward_loss
             # actor_optimizer.zero_grad()
             # loss.backward(retain_graph = True)
@@ -82,7 +86,9 @@ def train_net(memory, actor, critic, icm,optimizer):
             optimizer.zero_grad()
             loss.backward(retain_graph=True)
             optimizer.step()
+        returns.append(new_v.mean())
             # print(loss)
 
 
+    print('평균 리턴 : {}'.format(sum(returns)/len(returns)))
 
