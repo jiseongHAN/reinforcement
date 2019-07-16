@@ -40,7 +40,7 @@ def train(actor, critic, buffer, actor_optim, critic_optim):
     adv = (adv - adv.mean()) / (adv.std() + 1e-12)
     # returns = discounted_r(r,gamma=hp.gamma,gae=False)
     # returns = torch.tensor(returns).unsqueeze(-1)
-    for n in tqdm(range(len(buffer) // hp.batch_size)):
+    for n in range(len(buffer) // hp.batch_size):
         s_b=s[idx[n*hp.batch_size:(n+1)*hp.batch_size]]
         a_b=a[idx[n*hp.batch_size:(n+1)*hp.batch_size]]
         old_b = old_p[idx[n*hp.batch_size:(n+1)*hp.batch_size]]
@@ -73,6 +73,6 @@ def train(actor, critic, buffer, actor_optim, critic_optim):
 
 #TODO : checking matrix dimension
 #TODO : update gradient per model
-
+#TODO : edit critic loss according to openai Baseline
 
 
