@@ -26,7 +26,7 @@
   
   - Understanding ICM : **done(?)**
   
-  - make own Code : **~ing**
+  - make own Code : **~ing** : solving... revising...
   
  
 ## 3. Random Network Distillation
