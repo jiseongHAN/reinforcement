@@ -28,7 +28,7 @@
   
   - make own Code : **~ing** : solving... revising...
   
-## 4. Deep Deterministic Policy Gradient
+## 3. Deep Deterministic Policy Gradient
 * TODO
   - Study : **Start**
   
