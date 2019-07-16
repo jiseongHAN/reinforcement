@@ -28,8 +28,15 @@
   
   - make own Code : **~ing** : solving... revising...
   
- 
-## 3. Random Network Distillation
+## 4. Deep Deterministic Policy Gradient
+* TODO
+  - Study : **Start**
+  
+  - Find Implemntation Code
+  
+  - 
+
+## 4. Random Network Distillation
 * TODO
   - Study : **Sooner**
   
@@ -38,4 +45,4 @@
   - Make my own Code : **Later**
   
 
-## 4. I don't know
+
