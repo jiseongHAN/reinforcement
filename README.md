@@ -9,13 +9,9 @@
   - use argparse : 
   
   - add mlp model : **DONE**
-  
-  - add CNN model : **Get model from Curiosity driven exploration**
-  
+    
   - add lstm or gru model :
-  
-  - add tensorboard to visualization : **Studying tensorboard now**
-   
+     
   - add save model : **Done**
 
 ## 2. Curiosity driven exploration
