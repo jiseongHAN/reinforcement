@@ -14,7 +14,6 @@ from utils import *
 import config as cf
 import torch
 import random
-from tqdm import tqdm
 
 ### agent
 
@@ -22,14 +21,10 @@ from tqdm import tqdm
 #### make batch from memory
 # actor_optimizer, critic_optimizer, icm_optimizer
 def train_net(memory, actor, critic, icm,optimizer):
-    if cf.gpu:
-        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    else:
-        device = 'cpu'
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     mse = nn.MSELoss()
     random.shuffle(memory)
-    returns = []
-    for n in tqdm(range(len(memory) // cf.batch_size)):
+    for n in range(len(memory) // cf.batch_size):
         s_lst, a_lst, r_lst, s_prime_lst, done_lst, prob_lst = [], [], [], [], [], []
         for transition in memory[n * cf.batch_size:(n + 1) * cf.batch_size]:
             s, a, r, s_prime, done, prob = transition
@@ -54,7 +49,7 @@ def train_net(memory, actor, critic, icm,optimizer):
 
         old_v = critic(s)
         td_target = total_reward + cf.gamma * critic(s_prime) * done
-        delta = (td_target - old_v) * done
+        delta = td_target - old_v
         adv = discounted_r(delta,gamma = cf.gamma, gae= True)
         adv = normalization(adv).to(device)
         # adv = adv.to(device)
@@ -86,9 +81,7 @@ def train_net(memory, actor, critic, icm,optimizer):
             optimizer.zero_grad()
             loss.backward(retain_graph=True)
             optimizer.step()
-        returns.append(new_v.mean())
             # print(loss)
 
 
-    print('평균 리턴 : {}'.format(sum(returns)/len(returns)))
 
