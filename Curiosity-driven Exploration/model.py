@@ -1,10 +1,8 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.distributions.categorical import Categorical
-import torch.optim as optim
-import numpy as np
 import config as cf
+
 def swish(x):
     ret = x * torch.sigmoid(x)
     return ret
@@ -12,10 +10,10 @@ def swish(x):
 class CNNActor(nn.Module):
     def __init__(self,n_action):
         super(CNNActor,self).__init__()
-        self.conv1 = nn.Conv2d(4,32,4,2)
+        self.conv1 = nn.Conv2d(cf.stacked_frame,32,4,2)
         self.conv2 = nn.Conv2d(32,64,4,2)
-        self.conv3 = nn.Conv2d(64,64,3,1)
-        self.fc1 = nn.Linear(18496, cf.hidden)
+        self.conv3 = nn.Conv2d(64,64,2,1)
+        self.fc1 = nn.Linear(20736, cf.hidden)
         self.pi = nn.Linear(cf.hidden,n_action)
 
         #### xavier init
@@ -24,11 +22,11 @@ class CNNActor(nn.Module):
         nn.init.xavier_uniform_(self.conv3.weight)
 
     def forward(self,x,dim=1):
-        x = torch.tanh(self.conv1(x))
-        x = torch.tanh(self.conv2(x))
-        x = torch.tanh(self.conv3(x))
-        x = x.view(-1,18496)
-        x = torch.tanh(self.fc1(x))
+        x = swish(self.conv1(x))
+        x = swish(self.conv2(x))
+        x = swish(self.conv3(x))
+        x = x.view(-1,20736)
+        x = swish(self.fc1(x))
         prob = F.softmax(self.pi(x),dim = dim)
         return prob
 
@@ -36,10 +34,10 @@ class CNNActor(nn.Module):
 class CNNCritic(nn.Module):
     def __init__(self):
         super(CNNCritic,self).__init__()
-        self.conv1 = nn.Conv2d(4,32,4,2)
+        self.conv1 = nn.Conv2d(cf.stacked_frame,32,4,2)
         self.conv2 = nn.Conv2d(32,64,4,2)
-        self.conv3 = nn.Conv2d(64,64,3,1)
-        self.fc1 = nn.Linear(18496, cf.hidden)
+        self.conv3 = nn.Conv2d(64,64,2,1)
+        self.fc1 = nn.Linear(20736, cf.hidden)
         self.fc_v = nn.Linear(cf.hidden,1)
 
         #### xavier init
@@ -48,11 +46,11 @@ class CNNCritic(nn.Module):
         nn.init.xavier_uniform_(self.conv3.weight)
 
     def forward(self,x):
-        x = torch.tanh(self.conv1(x))
-        x = torch.tanh(self.conv2(x))
-        x = torch.tanh(self.conv3(x))
-        x = x.view(-1,18496)
-        x = torch.tanh(self.fc1(x))
+        x = swish(self.conv1(x))
+        x = swish(self.conv2(x))
+        x = swish(self.conv3(x))
+        x = x.view(-1,20736)
+        x = swish(self.fc1(x))
         v = self.fc_v(x)
         return v
 
@@ -62,20 +60,20 @@ class NatureHead(nn.Module):
         super(NatureHead, self).__init__()
         self.conv1 = nn.Conv2d(cf.stacked_frame,32,4,2)
         self.conv2 = nn.Conv2d(32,64,4,2)
-        self.conv3 = nn.Conv2d(64,64,3,1)
-        self.fc1 = nn.Linear(18496, cf.hidden)
+        self.conv3 = nn.Conv2d(64,64,2,1)
+        self.fc1 = nn.Linear(20736, cf.hidden)
         self.output_size = cf.hidden
 
     def forward(self, x):
-        x = torch.tanh(self.conv1(x))
-        x = torch.tanh(self.conv2(x))
-        x = torch.tanh(self.conv3(x))
-        ret = x.view(-1,18496)
+        x = swish(self.conv1(x))
+        x = swish(self.conv2(x))
+        x = swish(self.conv3(x))
+        ret = x.view(-1,20736)
         return ret
 
 
 class ICM(torch.nn.Module):
-    def __init__(self, action_space, state_size=18496, cnn_head=True):
+    def __init__(self, action_space, state_size=20736, cnn_head=True):
         super(ICM, self).__init__()
         if cnn_head:
             self.head = NatureHead()
