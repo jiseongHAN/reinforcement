@@ -46,17 +46,21 @@ class FlagReward(gym.Wrapper):
         self.score = 0.0
         return self.env.reset()
 
-def env_make(env_id, action):
-    mario = gym_super_mario_bros.make(env_id)
-    env = FlagReward(mario)
-    env = SkippedEnv(env, cf.skip)
-    if action == COMPLEX_MOVEMENT:
-        env = JoypadSpace(env,COMPLEX_MOVEMENT)
-    elif action == SIMPLE_MOVEMENT:
-        env = JoypadSpace(env, SIMPLE_MOVEMENT)
-    elif action == RIGHT_ONLY:
-        env = JoypadSpace(env,RIGHT_ONLY)
+def env_make(env_id, action=None,ismario=False):
+    if ismario:
+        mario = gym_super_mario_bros.make(env_id)
+        env = FlagReward(mario)
+        env = SkippedEnv(env, cf.skip)
+        if action == COMPLEX_MOVEMENT:
+            env = JoypadSpace(env,COMPLEX_MOVEMENT)
+        elif action == SIMPLE_MOVEMENT:
+            env = JoypadSpace(env, SIMPLE_MOVEMENT)
+        elif action == RIGHT_ONLY:
+            env = JoypadSpace(env,RIGHT_ONLY)
+        else:
+            raise NotImplementedError
     else:
-        raise NotImplementedError
+        env = gym.make(env_id)
+        env = SkippedEnv(env, cf.skip)
     return env
 
