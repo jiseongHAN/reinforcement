@@ -13,6 +13,8 @@
   - add lstm or gru model :
      
   - add save model : **Done**
+  
+ ### There is a heavy issue in PPO code -> I have to fix it!!!!
 
 ## 2. Curiosity driven exploration
 * TODO
