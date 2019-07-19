@@ -2,7 +2,7 @@
 
 #
 
-## 1. PPO with Continuous action space
+## `1. PPO with Continuous action space`
 * TODO
   - base-code : **DONE**
   
@@ -16,7 +16,7 @@
   
  ### There is a heavy issue in PPO code -> I have to fix it!!!!
 
-## 2. Curiosity driven exploration
+## `2. Curiosity driven exploration`
 * TODO
   - Study : **DONE**
   
@@ -26,7 +26,7 @@
   
   - make own Code : **~ing** : solving... revising...
   
-## 3. Deep Deterministic Policy Gradient
+## `3. Deep Deterministic Policy Gradient`
 * TODO
   - Study : **Start**
   
@@ -34,7 +34,7 @@
   
   - 
 
-## 4. Random Network Distillation
+## `4. Random Network Distillation`
 * TODO
   - Study : **Sooner**
   
