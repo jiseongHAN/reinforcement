@@ -4,7 +4,7 @@
 
 #
 
-## `1. PPO with Continuous action space`
+## `1. Proximal Policy Optimization`
 
 ### 1-1 PPO with Continuous action space
 
