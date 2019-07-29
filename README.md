@@ -4,7 +4,7 @@
 
 ## `1. PPO with Continuous action space`
 
-# 1-1 PPO with Continuous action space
+### 1-1 PPO with Continuous action space
 
 * TODO
   - base-code : **DONE**
@@ -18,7 +18,7 @@
   - add save model : **Done**
   
 
-# 1-2 PPO with Atari Environment
+### 1-2 PPO with Atari Environment
 
 * TODO
   - base-code : **DONE**
