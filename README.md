@@ -1,4 +1,4 @@
-<img src=https://github.com/jiseongHAN/reinforcement/edit/master/tf_logo_transp.png" width=25% align="right">
+<img src="https://github.com/jiseongHAN/reinforcement/blob/master/ezgif.com-video-to-gif.gif" width=25% align="center">
 
 
 # Policy-Based RL
