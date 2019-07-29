@@ -3,6 +3,9 @@
 #
 
 ## `1. PPO with Continuous action space`
+
+# 1-1 PPO with Continuous action space
+
 * TODO
   - base-code : **DONE**
   
@@ -14,7 +17,18 @@
      
   - add save model : **Done**
   
- ### There is a heavy issue in PPO code -> I have to fix it!!!!
+
+# 1-2 PPO with Atari Environment
+
+* TODO
+  - base-code : **DONE**
+  
+  - use argparse : 
+  
+  - add A3Cmodel :
+  
+  - add save model : **Done**
+
 
 ## `2. Curiosity driven exploration`
 * TODO
