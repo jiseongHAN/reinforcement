@@ -21,7 +21,8 @@
   
 
 ### 1-2 PPO with Atari Environment
-#<img src="https://github.com/jiseongHAN/reinforcement/blob/master/ezgif.com-video-to-gif.gif" width=25% align="center">
+
+# <img src="https://github.com/jiseongHAN/reinforcement/blob/master/ezgif.com-video-to-gif.gif" width=25% align="center">
 
 
 * TODO
