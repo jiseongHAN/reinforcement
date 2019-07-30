@@ -46,9 +46,9 @@
   
 ## `3. Deep Deterministic Policy Gradient`
 * TODO
-  - Study : **Start**
+  - Study : **~ing**
   
-  - Find Implemntation Code
+  - Implementation : **Start**
   
   - 
 
