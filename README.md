@@ -21,9 +21,13 @@
   
 
 ### 1-2 PPO with Atari Environment
+<div style="width:13%;float:left;">
+  <img src="/image/CrazyClimber.gif" width=200 height=200>
+</div>
+<div style="width:85%;float:right;">
+  <img src="/image/SpaceInvaders.gif" width=200 height=200>
+</div>
 
-# <img src="https://github.com/jiseongHAN/reinforcement/blob/master/CrazyClimber.gif" width=50% align="left">
-# <img src="https://github.com/jiseongHAN/reinforcement/blob/master/SpaceInvaders.gif" width=50% align="right">
 
 
 * TODO
