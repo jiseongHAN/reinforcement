@@ -21,14 +21,8 @@
   
 
 ### 1-2 PPO with Atari Environment
-<div style="width:13%;float:left;">
-  <img src="/image/CrazyClimber.gif" width=200 height=200>
-</div>
-<div style="width:80%;float:right;">
-  <img src="/image/SpaceInvaders.gif" width=200 height=200>
-</div>
 
-
+<img src="/image/CrazyClimber.gif" width=200 height=200>
 
 * TODO
   - base-code : **DONE**
