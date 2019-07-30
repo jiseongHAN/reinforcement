@@ -1,0 +1,91 @@
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import config as cf
+
+def swish(x):
+    ret = x * torch.sigmoid(x)
+    return ret
+
+class CNNActor(nn.Module):
+    def __init__(self,n_action):
+        super(CNNActor,self).__init__()
+        self.conv1 = nn.Conv2d(cf.stacked_frame,32,4,2)
+        self.conv2 = nn.Conv2d(32,64,4,2)
+        self.conv3 = nn.Conv2d(64,64,2,1)
+        self.fc1 = nn.Linear(20736, cf.hidden)
+        self.pi = nn.Linear(cf.hidden,n_action)
+
+        #### xavier init
+        nn.init.xavier_uniform_(self.conv1.weight)
+        nn.init.xavier_uniform_(self.conv2.weight)
+        nn.init.xavier_uniform_(self.conv3.weight)
+
+    def forward(self,x,dim=1):
+        x = swish(self.conv1(x))
+        x = swish(self.conv2(x))
+        x = swish(self.conv3(x))
+        x = x.view(-1,20736)
+        x = swish(self.fc1(x))
+        prob = F.softmax(self.pi(x),dim = dim)
+        return prob
+
+
+class CNNCritic(nn.Module):
+    def __init__(self):
+        super(CNNCritic,self).__init__()
+        self.conv1 = nn.Conv2d(cf.stacked_frame,32,4,2)
+        self.conv2 = nn.Conv2d(32,64,4,2)
+        self.conv3 = nn.Conv2d(64,64,2,1)
+        self.fc1 = nn.Linear(20736, cf.hidden)
+        self.fc_v = nn.Linear(cf.hidden,1)
+
+        #### xavier init
+        nn.init.xavier_uniform_(self.conv1.weight)
+        nn.init.xavier_uniform_(self.conv2.weight)
+        nn.init.xavier_uniform_(self.conv3.weight)
+
+    def forward(self,x):
+        x = swish(self.conv1(x))
+        x = swish(self.conv2(x))
+        x = swish(self.conv3(x))
+        x = x.view(-1,20736)
+        x = swish(self.fc1(x))
+        v = self.fc_v(x)
+        return v
+
+###########
+class MLPActor(nn.Module):
+    def __init__(self,n_input,n_action):
+        super(MLPActor,self).__init__()
+        self.fc1 = nn.Linear(n_input,512)
+        self.fc2 = nn.Linear(512,512)
+        self.fc3 = nn.Linear(512,256)
+        self.pi = nn.Linear(256,n_action)
+
+    def forward(self,x,dim = 1):
+        x = swish(self.fc1(x))
+        x = swish(self.fc2(x))
+        x = swish(self.fc3(x))
+        prob = F.softmax(self.pi(x),dim = dim)
+        return prob
+
+
+class MLPCritic(nn.Module):
+    def __init__(self, n_input):
+        super(MLPCritic, self).__init__()
+        self.fc1 = nn.Linear(n_input, 512)
+        self.fc2 = nn.Linear(512, 512)
+        self.fc3 = nn.Linear(512, 256)
+        self.v = nn.Linear(256, 1)
+
+    def forward(self, x, dim=1):
+        x = swish(self.fc1(x))
+        x = swish(self.fc2(x))
+        x = swish(self.fc3(x))
+        value = self.v(x)
+        return value
+
+
+
+# TODO : 모델 만들기 Q / Value
