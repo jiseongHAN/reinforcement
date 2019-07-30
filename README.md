@@ -22,7 +22,8 @@
 
 ### 1-2 PPO with Atari Environment
 
-# <img src="https://github.com/jiseongHAN/reinforcement/blob/master/ezgif.com-video-to-gif.gif" width=50% align="middle">
+# <img src="https://github.com/jiseongHAN/reinforcement/blob/master/CrazyClimber.gif" width=50% align="left">
+# <img src="https://github.com/jiseongHAN/reinforcement/blob/master/SpaceInvaders.gif" width=50% align="right">
 
 
 * TODO
