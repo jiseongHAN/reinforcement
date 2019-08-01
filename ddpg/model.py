@@ -34,8 +34,8 @@ class CNNActor(nn.Module):
         x = x.view(-1,28224)
         x = torch.relu(self.fc1(x))
         mu = self.pi(x)
-        mu[0] = torch.tanh(mu[0])
-        mu[1:3] = torch.sigmoid(mu[1:3])
+        mu[:,0] = torch.tanh(mu[:,0])
+        mu[:,1:3] = torch.sigmoid(mu[:,1:3])
         return mu
 
 
