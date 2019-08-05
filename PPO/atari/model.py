@@ -22,11 +22,11 @@ class CNNActor(nn.Module):
         nn.init.xavier_uniform_(self.conv3.weight)
 
     def forward(self,x,dim=1):
-        x = F.leaky_relu(self.conv1(x))
-        x = F.leaky_relu(self.conv2(x))
-        x = F.leaky_relu(self.conv3(x))
+        x = swish(self.conv1(x))
+        x = swish(self.conv2(x))
+        x = swish(self.conv3(x))
         x = x.view(-1,20736)
-        x = F.leaky_relu(self.fc1(x))
+        x = swish(self.fc1(x))
         prob = F.softmax(self.pi(x),dim = dim)
         return prob
 
@@ -46,11 +46,11 @@ class CNNCritic(nn.Module):
         nn.init.xavier_uniform_(self.conv3.weight)
 
     def forward(self,x):
-        x = F.leaky_relu(self.conv1(x))
-        x = F.leaky_relu(self.conv2(x))
-        x = F.leaky_relu(self.conv3(x))
+        x = swish(self.conv1(x))
+        x = swish(self.conv2(x))
+        x = swish(self.conv3(x))
         x = x.view(-1,20736)
-        x = F.leaky_relu(self.fc1(x))
+        x = swish(self.fc1(x))
         v = self.fc_v(x)
         return v
 
@@ -65,9 +65,9 @@ class NatureHead(nn.Module):
         self.output_size = cf.hidden
 
     def forward(self, x):
-        x = F.leaky_relu(self.conv1(x))
-        x = F.leaky_relu(self.conv2(x))
-        x = F.leaky_relu(self.conv3(x))
+        x = swish(self.conv1(x))
+        x = swish(self.conv2(x))
+        x = swish(self.conv3(x))
         ret = x.view(-1,20736)
         return ret
 
@@ -109,9 +109,9 @@ class MLPActor(nn.Module):
         self.pi = nn.Linear(256,n_action)
 
     def forward(self,x,dim = 1):
-        x = F.leaky_relu(self.fc1(x))
-        x = F.leaky_relu(self.fc2(x))
-        x = F.leaky_relu(self.fc3(x))
+        x = swish(self.fc1(x))
+        x = swish(self.fc2(x))
+        x = swish(self.fc3(x))
         prob = F.softmax(self.pi(x),dim = dim)
         return prob
 
@@ -125,8 +125,8 @@ class MLPCritic(nn.Module):
         self.v = nn.Linear(256, 1)
 
     def forward(self, x, dim=1):
-        x = F.leaky_relu(self.fc1(x))
-        x = F.leaky_relu(self.fc2(x))
-        x = F.leaky_relu(self.fc3(x))
+        x = swish(self.fc1(x))
+        x = swish(self.fc2(x))
+        x = swish(self.fc3(x))
         value = self.v(x)
         return value
