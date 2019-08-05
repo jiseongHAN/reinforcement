@@ -51,7 +51,7 @@ class PPOagent():
         self.critic = CNNCritic()
         self.actor.to(self.device)
         self.critic.to(self.device)
-        self.optimizer = optim.Adam(list(self.actor.parameters()) + list(self.critic.parameters()))
+        self.optimizer = optim.Adam(list(self.actor.parameters()) + list(self.critic.parameters()),weight_decay=cf.l2_rate)
 
 
 
@@ -99,11 +99,12 @@ class PPOagent():
         advantage = 0.0
         for t in reversed(range(len(r))):
             advantage = self.gamma * self.lam * advantage * done[t][0] + delta[t][0]
+            # advantage = self.gamma * self.lam * delta[t][0] * done[t][0] + advantage
             advantage_lst.append([advantage])
         advantage_lst.reverse()
         adv= torch.tensor(advantage_lst, dtype=torch.float).to(self.device)
         #
-        adv = normalization(adv)
+        adv = normalization(adv,False)
         # adv = normalization(td_target)
 
 
