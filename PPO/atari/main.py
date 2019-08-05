@@ -16,6 +16,7 @@ def main():
         # s = s.transpose(2,0,1)
         s = env.reset()
         s = prepro(s)
+        s = normalization(s,5)
         state = np.zeros((cf.stacked_frame,cf.height,cf.width))
         for i in range(cf.stacked_frame):
             state[i,::] = s
@@ -33,7 +34,7 @@ def main():
                 s_prime, r, done, info = env.step(a)
                 state_prime = np.zeros_like(state)
                 state_prime[:cf.stacked_frame-1] = state[1:]
-                state_prime[cf.stacked_frame-1, :, :] = prepro(s_prime)
+                state_prime[cf.stacked_frame-1, :, :] = normalization(prepro(s_prime),5)
                 # s_prime = s_prime._force().transpose(2,0,1)
                 score += r
                 reward_history.append(r)
@@ -119,3 +120,4 @@ if __name__ == '__main__':
 # 자잘한 버그 / agent와 main 간의 호환! - env 안정성(클리어)
 # TODO : hyperparameter 조정
 # TODO : a3c / argparse
+
