@@ -23,20 +23,27 @@ def discounted_r(data,gamma,gae:bool):
     return torch.tensor(r_lst)
 
 
-def normalization(state):
+def normalization(state,clip):
     if type(state) == torch.Tensor:
         mean = state.mean()
         std = state.std()
         state = (state- mean) / (std + 1e-12)
+        if clip:
+            state = torch.clamp(state,-clip,clip)
     else:
         mean = np.mean(state)
         std = np.std(state)
         state = (state-mean) / (std + 1e-12)
+        if clip:
+            state = np.clip(state,-clip,clip)
     return state
+
 
 def prepro(state):
     state = cv2.cvtColor(state, cv2.COLOR_RGB2GRAY)
-    state = cv2.resize(state,(cf.height,cf.width)) / 255.0
+    # state = cv2.resize(state,(cf.height,cf.width)) / 255.0
+    state = cv2.resize(state,(cf.height,cf.width))
+
     return state
 
 
@@ -92,3 +99,9 @@ def global_grad_norm_(parameters, norm_type=2):
         total_norm = total_norm ** (1. / norm_type)
 
     return total_norm
+
+def make_ma(data,term):
+    ma = []
+    for i in range(len(data)//term):
+        ma.append(sum(data[i*term:(i+1)*term])/term)
+    return ma
