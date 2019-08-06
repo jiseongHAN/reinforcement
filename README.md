@@ -52,11 +52,11 @@
   
   - 
 
-## `4. Random Network Distillation`
+## 4. Soft Actor Critic
 * TODO
-  - Study : **Sooner**
+  - Study : **~ing**
   
-  - Implementaion Code : **or**
+  - Implementaion Code : **Sooner **
   
-  - Make my own Code : **Later**
+  - Make my own Code : **or later**
   
