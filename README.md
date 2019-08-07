@@ -56,7 +56,7 @@
 * TODO
   - Study : **~ing**
   
-  - Implementaion Code : **Sooner **
+  - Implementaion Code : **Sooner**
   
   - Make my own Code : **or later**
   
