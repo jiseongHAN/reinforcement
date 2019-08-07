@@ -4,7 +4,7 @@
 
 #
 
-## `1. Proximal Policy Optimization`
+## 1. Proximal Policy Optimization
 
 ### 1-1 PPO with Continuous action space
 
@@ -34,7 +34,7 @@
   - add save model : **Done**
 
 
-## `2. Curiosity driven exploration`
+## 2. Curiosity driven exploration
 * TODO
   - Study : **DONE**
   
@@ -44,7 +44,7 @@
   
   - make own Code : **~ing** : solving... revising...
   
-## `3. Deep Deterministic Policy Gradient`
+## 3. Deep Deterministic Policy Gradient
 * TODO
   - Study : **~ing**
   
