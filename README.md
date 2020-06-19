@@ -1,62 +1,28 @@
 
 
-# Policy-Based RL
+# Implementaion RL Algorithm with Pytorch
 
-#
+## Policy Based
 
-## 1. Proximal Policy Optimization
+### 1. Reinforce
+### 2. Proximal Policy Optimization
 
-### 1-1 PPO with Continuous action space
+#### 1-1 PPO with Continuous action space
+#### 1-2 PPO with Atari Environment
 
-* TODO
-  - base-code : **DONE**
+### 3. Curiosity driven exploration
   
-  - use argparse : **DONE**
-  
-  - add mlp model : **DONE**
-    
-  - add lstm or gru model :
-     
-  - add save model : **Done**
-  
+### 4. Deep Deterministic Policy Gradient
+### 5. Random Network Distillation  
 
-### 1-2 PPO with Atari Environment
+## Value Based
 
-<img src="/image/CrazyClimber.gif" width=200 height=200>
+### 1. Deep Q-Learning
+### 2. Dobule DQN
+### 3. Dueling DQN
+### 4. Ape-X
+### 5. C51
 
-* TODO
-  - base-code : **DONE**
-  
-  - use argparse : 
-  
-  - add A3Cmodel :
-  
-  - add save model : **Done**
-
-
-## 2. Curiosity driven exploration
-* TODO
-  - Study : **DONE**
-  
-  - Understanding from other code : **~ing**
-  
-  - Understanding ICM : **done(?)**
-  
-  - make own Code : **~ing** : solving... revising...
-  
-## 3. Deep Deterministic Policy Gradient
-* TODO
-  - Study : **~ing**
-  
-  - Implementation : **Start**
-  
-  - 
-
-## 4. Soft Actor Critic
-* TODO
-  - Study : **~ing**
-  
-  - Implementaion Code : **Sooner**
-  
-  - Make my own Code : **or later**
-  
+## Sampling Method
+### 1. Prioritized Experience Replay
+### 2. Hindsight Experience Replay
