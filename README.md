@@ -9,9 +9,7 @@
 
 #### 1-1 PPO with Continuous action space
 #### 1-2 PPO with Atari Environment
-
 ### 3. Curiosity driven exploration
-  
 ### 4. Deep Deterministic Policy Gradient
 ### 5. Random Network Distillation  
 
@@ -20,8 +18,8 @@
 ### 1. Deep Q-Learning
 ### 2. Dobule DQN
 ### 3. Dueling DQN
-### 4. Ape-X
-### 5. C51
+### 4. C51
+### 5. Ape-X
 
 ## Sampling Method
 ### 1. Prioritized Experience Replay
