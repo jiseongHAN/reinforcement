@@ -4,7 +4,7 @@
 
 ## Policy Based
 
-### 1. Reinforce
+### 1. [Reinforce](https://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf)
 ### 2. [Proximal Policy Optimization](https://arxiv.org/pdf/1707.06347.pdf)
 
 #### 1-1 PPO with Continuous action space
