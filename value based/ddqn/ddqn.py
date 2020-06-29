@@ -64,7 +64,7 @@ def init_weights(m):
 def train(q, q_target, memory, batch_size, gamma, optimizer):
     s,r,a,s_prime,done = list(map(list, zip(*memory.sample(batch_size))))
     a_max = q(s_prime).max(1)[1].unsqueeze(-1)
-    y = torch.FloatTensor(r).unsqueeze(-1) + gamma*q(s_prime).gather(1,a_max)*torch.FloatTensor(done).unsqueeze(-1)
+    y = torch.FloatTensor(r).unsqueeze(-1) + gamma*q_target(s_prime).gather(1,a_max)*torch.FloatTensor(done).unsqueeze(-1)
     a = torch.tensor(a).unsqueeze(-1)
     loss = torch.sum((y - q(s).gather(1,a))**2)
     optimizer.zero_grad()
