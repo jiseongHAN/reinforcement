@@ -35,34 +35,28 @@ class mlp(nn.Module):
         super(mlp,self).__init__()
         self.layer1 = nn.Linear(n_obs,128)
         self.layer2 = nn.Linear(128,128)
-        self.q = nn.Linear(128,n_action)
-
         self.adv = nn.Linear(128,n_action)
         self.v = nn.Linear(128,1)
 
+        self.seq = nn.Sequential(
+            self.layer1,
+            self.layer2,
+            self.adv,
+            self.v
+        )
 
-        '''
-        v-> |adv| 만큼 늘리기
-        q' = V + ( Adv - 1/|adv| * max(Adv) )
-        loss = y - q'
-        '''
-
-        # self.seq = nn.Sequential(
-        #     self.layer1,
-        #     nn.ReLU(),
-        #     self.layer2,
-        #     nn.ReLU(),
-        #     self.q
-        # )
-
-        # self.seq.apply(init_weights)
+        self.seq.apply(init_weights)
 
     def forward(self,x):
         if type(x) != torch.Tensor:
             x = torch.FloatTensor(x)
-            return self.seq(x)
-        else:
-            return self.seq(x)
+        x = F.relu(self.layer1(x))
+        x = F.relu(self.layer2(x))
+        v = self.v(x)
+        adv = self.adv(x)
+        q = v + (adv - 1/adv.dim() * adv.max(-1,True)[0])
+        return q
+
 
 
 def init_weights(m):
@@ -71,10 +65,18 @@ def init_weights(m):
         m.bias.data.fill_(0.01)
 
 
+
+    '''
+    v-> |adv| 만큼 늘리기
+    q' = V + ( Adv - 1/|adv| * max(Adv) )
+    loss = y - q'
+    '''
+
+
 def train(q, q_target, memory, batch_size, gamma, optimizer):
     s,r,a,s_prime,done = list(map(list, zip(*memory.sample(batch_size))))
     a_max = q(s_prime).max(1)[1].unsqueeze(-1)
-    y = torch.FloatTensor(r).unsqueeze(-1) + gamma*q(s_prime).gather(1,a_max)*torch.FloatTensor(done).unsqueeze(-1)
+    y = torch.FloatTensor(r).unsqueeze(-1) + gamma*q_target(s_prime).gather(1,a_max)*torch.FloatTensor(done).unsqueeze(-1)
     a = torch.tensor(a).unsqueeze(-1)
     loss = torch.sum((y - q(s).gather(1,a))**2)
     optimizer.zero_grad()
