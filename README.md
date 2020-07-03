@@ -7,8 +7,8 @@
 ### 1. [Reinforce](https://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf)
 ### 2. [Proximal Policy Optimization](https://arxiv.org/pdf/1707.06347.pdf)
 
-#### 1-1 PPO with Continuous action space
-#### 1-2 PPO with Atari Environment
+#### 1-1 PPO with Continuous action space :Done
+#### 1-2 PPO with Atari Environment : Done
 
 
 ### 3. [Curiosity driven exploration](https://arxiv.org/pdf/1705.05363.pdf)
@@ -17,9 +17,9 @@
 
 ## Value Based
 
-### 1. [Deep Q-Learning](https://web.stanford.edu/class/psych209/Readings/MnihEtAlHassibis15NatureControlDeepRL.pdf)
-### 2. [Dobule DQN](https://arxiv.org/pdf/1509.06461.pdf)
-### 3. [Dueling DQN](https://arxiv.org/pdf/1511.06581.pdf)
+### 1. [Deep Q-Learning](https://web.stanford.edu/class/psych209/Readings/MnihEtAlHassibis15NatureControlDeepRL.pdf) : Done
+### 2. [Dobule DQN](https://arxiv.org/pdf/1509.06461.pdf) : Done
+### 3. [Dueling DQN](https://arxiv.org/pdf/1511.06581.pdf) : Done
 ### 4. [C51](https://arxiv.org/pdf/1707.06887.pdf)
 ### 5. [Ape-X DQN](https://openreview.net/pdf?id=H1Dy---0Z)
 
