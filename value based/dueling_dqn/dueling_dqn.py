@@ -54,7 +54,7 @@ class mlp(nn.Module):
         x = F.relu(self.layer2(x))
         v = self.v(x)
         adv = self.adv(x)
-        q = v + (adv - 1/adv.dim() * adv.max(-1,True)[0])
+        q = v + (adv - 1/adv.shape[-1] * adv.max(-1,True)[0])
         return q
 
 
