@@ -103,7 +103,6 @@ def train(q, memory, batch_size, gamma, optimizer):
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
-    return loss
 
 
 def copy_weights(q,q_target):
@@ -140,7 +139,7 @@ def main():
             s = s_prime
             total_score += r
             if len(memory) > 2000:
-                loss = train(q,memory,batch_size,gamma,optimizer)
+                train(q,memory,batch_size,gamma,optimizer)
                 # print(loss)
                 # t += 1
             # if t % update_interval == 0:
