@@ -60,12 +60,13 @@ class mlp(nn.Module):
         if type(x) != torch.Tensor:
             x = torch.FloatTensor(x)
         x = self.seq(x)
-        x = F.softmax(x,0)
-        return x.view(-1,self.n_action,self.n_atom)
+        x = x.view(-1, self.n_action, self.n_atom, )
+        x = F.softmax(x,-1)
+        return x
 
     def get_action(self,pi):
         q = (pi*torch.tensor(self.z)).sum(-1)
-        return q
+        return torch.argmax(q,-1,True)
 
 
 def init_weights(m):
@@ -74,21 +75,36 @@ def init_weights(m):
         m.bias.data.fill_(0.01)
 
 
-#TODO : update train function
 def train(q, memory, batch_size, gamma, optimizer):
     s,r,a,s_prime,done = list(map(list, zip(*memory.sample(batch_size))))
-    a_max = q.get_action(q(s_prime)).max(1)[1].unsqueeze(-1)
-
     m = torch.zeros(batch_size, q.n_action , q.n_atom)
+    p_prime = q(s_prime)
+    a_max = q.get_action(p_prime)
 
-    for j in range(q.n_atom):
 
 
-    loss = -torch.sum(m*torch.log(q(s)))
+    for i in range(batch_size):
+        if done[i] == 0:
+            tz = min(max(q.V_min,r[i]),q.V_max)
+            bj = (tz - q.V_min) / q.d_z
+            l,u = math.floor(bj),  math.ceil(bj)
+            m[i][a[i]][int(l)] += (u -bj)
+            m[i][a[i]][int(u)] += (bj-l)
+        else:
+            for j in range(q.n_atom):
+                tz = min(max(q.V_min,r[i] + gamma*q.z[j]),q.V_max)
+                bj = (tz - q.V_min) / q.d_z
+                l,u = math.floor(bj), math.ceil(bj)
+                m[i][a[i]][int(l)] += p_prime[i][a_max[i].squeeze()][j]*(u -bj)
+                m[i][a[i]][int(u)] += p_prime[i][a_max[i].squeeze()][j]*(bj-l)
 
+    # loss = -torch.sum(m*torch.log(q(s)))
+    loss = F.binary_cross_entropy_with_logits(q(s),m)
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
+    return loss
+
 
 def copy_weights(q,q_target):
     q_dict = q.state_dict()
@@ -96,17 +112,19 @@ def copy_weights(q,q_target):
 
 def main():
     gamma = 0.99
-    batch_size = 64
+    batch_size = 32
     env = gym.make("CartPole-v1")
     N = 10000
     eps = 0.001
     memory = replay_memory(N)
     epoch = 1000
+    n_atom = 51
+    V_min = -3
+    V_max = 5
     # update_interval = 4
-    q = mlp(env.observation_space.shape[0],env.action_space.n,51,0,10)
+    q = mlp(env.observation_space.shape[0],env.action_space.n,n_atom,V_min,V_max)
     # q_target = mlp(env.observation_space.shape[0],env.action_space.n,51,0,10)
     optimizer = optim.Adam(q.parameters(),lr=0.0005)
-    t = 0
     for k in range(epoch):
         s = env.reset()
         done = False
@@ -116,13 +134,14 @@ def main():
             if eps > np.random.rand():
                 a = env.action_space.sample()
             else:
-                a = np.argmax(q.get_action(q(s)).detach().numpy())
+                a = int(q.get_action(q(s)).detach().numpy())
             s_prime, r, done, _ = env.step(a)
             memory.push((list(s),float(r),int(a),list(s_prime),int(1-done)))
             s = s_prime
             total_score += r
             if len(memory) > 2000:
-                train(q,memory,batch_size,gamma,optimizer)
+                loss = train(q,memory,batch_size,gamma,optimizer)
+                # print(loss)
                 # t += 1
             # if t % update_interval == 0:
             #     copy_weights(q,q_target)
