@@ -7,13 +7,10 @@
 ### 1. [Reinforce](https://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf)
 ### 2. [Proximal Policy Optimization](https://arxiv.org/pdf/1707.06347.pdf)
 
-#### 1-1 PPO with Continuous action space :Done
-#### 1-2 PPO with Atari Environment : Done
+#### 2-1 PPO with Continuous action space :Done
+#### 2-2 PPO with Atari Environment : Done
 
-
-### 3. [Curiosity driven exploration](https://arxiv.org/pdf/1705.05363.pdf)
-### 4. [Deep Deterministic Policy Gradient](https://arxiv.org/pdf/1509.02971.pdf) : Pendulum Env Done
-### 5. [Random Network Distillation](https://arxiv.org/pdf/1810.12894.pdf)
+### 3. [Deep Deterministic Policy Gradient](https://arxiv.org/pdf/1509.02971.pdf) : Pendulum Env Done
 
 ## Value Based
 
@@ -26,3 +23,8 @@
 ## Sampling Method
 ### 1. [Prioritized Experience Replay](https://arxiv.org/pdf/1511.05952.pdf)
 ### 2. [Hindsight Experience Replay](https://arxiv.org/pdf/1707.01495.pdf)
+
+## Sparse Reward Env
+
+### 1. [Curiosity driven exploration](https://arxiv.org/pdf/1705.05363.pdf)
+### 2. [Random Network Distillation](https://arxiv.org/pdf/1810.12894.pdf)
