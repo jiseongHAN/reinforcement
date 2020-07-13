@@ -22,9 +22,10 @@
 
 ## Sampling Method
 ### 1. [Prioritized Experience Replay](https://arxiv.org/pdf/1511.05952.pdf)
-### 2. [Hindsight Experience Replay](https://arxiv.org/pdf/1707.01495.pdf)
 
 ## Sparse Reward Env
 
 ### 1. [Curiosity driven exploration](https://arxiv.org/pdf/1705.05363.pdf)
 ### 2. [Random Network Distillation](https://arxiv.org/pdf/1810.12894.pdf)
+### 3. [Hindsight Experience Replay](https://arxiv.org/pdf/1707.01495.pdf)
+
