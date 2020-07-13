@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b656ab7f-6811-40ba-9932-db0289671e8f" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>gather</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/sampling method/PER/per.py" />
+        <option value="$PROJECT_DIR$/value based/ddqn/ddqn.py" />
+        <option value="$PROJECT_DIR$/value based/c51/c51.py" />
+        <option value="$PROJECT_DIR$/value based/dueling_dqn/dueling_dqn.py" />
+        <option value="$PROJECT_DIR$/policy based/ddpg/ddpg.py" />
+        <option value="$PROJECT_DIR$/policy based/ddpg/pendulum/ddpg.py" />
+      </list>
+    </option>
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="ProjectConfigurationFiles">
+    <option name="files">
+      <list>
+        <option value="$PROJECT_DIR$/.idea/reinforcement.iml" />
+        <option value="$PROJECT_DIR$/.idea/misc.xml" />
+        <option value="$PROJECT_DIR$/.idea/modules.xml" />
+        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
+        <option value="$PROJECT_DIR$/.idea/libraries/R_User_Library.xml" />
+        <option value="$PROJECT_DIR$/.idea/dictionaries/jiseonghan.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="9" />
+    <option name="y" value="35" />
+    <option name="width" value="999" />
+    <option name="height" value="877" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="reinforcement" type="b2602c69:ProjectViewProjectNode" />
+              <item name="reinforcement" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="reinforcement" type="b2602c69:ProjectViewProjectNode" />
+              <item name="reinforcement" type="462c0819:PsiDirectoryNode" />
+              <item name="policy based" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="reinforcement" type="b2602c69:ProjectViewProjectNode" />
+              <item name="reinforcement" type="462c0819:PsiDirectoryNode" />
+              <item name="policy based" type="462c0819:PsiDirectoryNode" />
+              <item name="ddpg" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="reinforcement" type="b2602c69:ProjectViewProjectNode" />
+              <item name="reinforcement" type="462c0819:PsiDirectoryNode" />
+              <item name="policy based" type="462c0819:PsiDirectoryNode" />
+              <item name="ddpg" type="462c0819:PsiDirectoryNode" />
+              <item name="pendulum" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="reinforcement" type="b2602c69:ProjectViewProjectNode" />
+              <item name="reinforcement" type="462c0819:PsiDirectoryNode" />
+              <item name="sampling method" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="reinforcement" type="b2602c69:ProjectViewProjectNode" />
+              <item name="reinforcement" type="462c0819:PsiDirectoryNode" />
+              <item name="value based" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="reinforcement" type="b2602c69:ProjectViewProjectNode" />
+              <item name="reinforcement" type="462c0819:PsiDirectoryNode" />
+              <item name="value based" type="462c0819:PsiDirectoryNode" />
+              <item name="c51" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="reinforcement" type="b2602c69:ProjectViewProjectNode" />
+              <item name="reinforcement" type="462c0819:PsiDirectoryNode" />
+              <item name="value based" type="462c0819:PsiDirectoryNode" />
+              <item name="ddqn" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="reinforcement" type="b2602c69:ProjectViewProjectNode" />
+              <item name="reinforcement" type="462c0819:PsiDirectoryNode" />
+              <item name="value based" type="462c0819:PsiDirectoryNode" />
+              <item name="dueling_dqn" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/policy based/ddpg/pendulum" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b656ab7f-6811-40ba-9932-db0289671e8f" name="Default Changelist" comment="" />
+      <created>1593329522510</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1593329522510</updated>
+      <workItem from="1593329528293" duration="982000" />
+      <workItem from="1593354389133" duration="798000" />
+      <workItem from="1593431313599" duration="7000" />
+      <workItem from="1593435638795" duration="2338000" />
+      <workItem from="1593763697281" duration="8201000" />
+      <workItem from="1594015185619" duration="6279000" />
+      <workItem from="1594625572170" duration="6625000" />
+    </task>
+    <task id="LOCAL-00001" summary="dueling_dqn -&gt; need update">
+      <created>1593355279550</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1593355279550</updated>
+    </task>
+    <task id="LOCAL-00002" summary="ddqn correction training function">
+      <created>1593436259191</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1593436259191</updated>
+    </task>
+    <task id="LOCAL-00003" summary="dueling ddqn">
+      <created>1593439474735</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1593439474735</updated>
+    </task>
+    <task id="LOCAL-00004" summary="change |A|">
+      <created>1593764213160</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1593764213160</updated>
+    </task>
+    <task id="LOCAL-00005" summary="c51">
+      <created>1593787476496</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1593787476496</updated>
+    </task>
+    <task id="LOCAL-00006" summary="c51 done">
+      <created>1594021674077</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1594021674077</updated>
+    </task>
+    <task id="LOCAL-00007" summary="del loss">
+      <created>1594021705511</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1594021705511</updated>
+    </task>
+    <task id="LOCAL-00008" summary="ddpg pendulum env">
+      <created>1594641798248</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1594641798248</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="25230000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="23" width="1440" height="877" extended-state="6" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17811158" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.3299363" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3299363" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.3299363" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Remote Host" order="3" />
+      <window_info anchor="right" id="SciView" order="4" />
+      <window_info anchor="right" id="R Graphics" order="5" weight="0.3291536" />
+      <window_info anchor="right" id="R Packages" order="6" />
+      <window_info anchor="right" id="Database" order="7" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="dueling_dqn -&gt; need update" />
+    <MESSAGE value="ddqn correction training function" />
+    <MESSAGE value="dueling ddqn" />
+    <MESSAGE value="change |A|" />
+    <MESSAGE value="c51" />
+    <MESSAGE value="c51 done" />
+    <MESSAGE value="del loss" />
+    <MESSAGE value="ddpg pendulum env" />
+    <option name="LAST_COMMIT_MESSAGE" value="ddpg pendulum env" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/sampling method/PER/per.py" />
+    <entry file="file://$PROJECT_DIR$/value based/dqn/dqn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="95" column="23" lean-forward="true" selection-start-line="95" selection-start-column="23" selection-end-line="95" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/value based/c51/c51.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="66" column="24" lean-forward="true" selection-start-line="66" selection-start-column="24" selection-end-line="66" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/value based/dueling_dqn/dueling_dqn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="33" lean-forward="true" selection-start-line="13" selection-start-column="33" selection-end-line="13" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/policy based/ddpg/model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1065">
+          <caret line="71" column="18" lean-forward="true" selection-start-line="71" selection-start-column="18" selection-end-line="71" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/policy based/ddpg/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/policy based/ddpg/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="20" column="9" lean-forward="true" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/policy based/ddpg/OUNoise.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/policy based/ddpg/config.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/value based/ddqn/ddqn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="90" column="26" lean-forward="true" selection-start-line="90" selection-start-column="26" selection-end-line="90" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/policy based/ddpg/pendulum/ddpg.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="172" column="22" lean-forward="true" selection-start-line="172" selection-start-column="22" selection-end-line="172" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/policy based/ddpg/agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="55" column="32" selection-start-line="55" selection-start-column="31" selection-end-line="55" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
