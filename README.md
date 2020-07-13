@@ -12,7 +12,7 @@
 
 
 ### 3. [Curiosity driven exploration](https://arxiv.org/pdf/1705.05363.pdf)
-### 4. [Deep Deterministic Policy Gradient](https://arxiv.org/pdf/1509.02971.pdf)
+### 4. [Deep Deterministic Policy Gradient](https://arxiv.org/pdf/1509.02971.pdf) : Pendulum Env Done
 ### 5. [Random Network Distillation](https://arxiv.org/pdf/1810.12894.pdf)
 
 ## Value Based
