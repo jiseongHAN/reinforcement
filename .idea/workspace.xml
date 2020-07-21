@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b656ab7f-6811-40ba-9932-db0289671e8f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="b656ab7f-6811-40ba-9932-db0289671e8f" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,8 +25,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/atari/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="121" lean-forward="true" selection-start-line="121" selection-end-line="121" />
+            <state relative-caret-position="345">
+              <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -149,7 +147,7 @@
       <workItem from="1594625572170" duration="6625000" />
       <workItem from="1594711667848" duration="11000" />
       <workItem from="1595227363823" duration="175000" />
-      <workItem from="1595309101723" duration="2859000" />
+      <workItem from="1595309101723" duration="3011000" />
     </task>
     <task id="LOCAL-00001" summary="dueling_dqn -&gt; need update">
       <created>1593355279550</created>
@@ -207,11 +205,18 @@
       <option name="project" value="LOCAL" />
       <updated>1594641798248</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="atari!">
+      <created>1595312130374</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1595312130374</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28275000" />
+    <option name="totallyTimeSpent" value="28427000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="877" extended-state="6" />
@@ -295,7 +300,8 @@
     <MESSAGE value="c51 done" />
     <MESSAGE value="del loss" />
     <MESSAGE value="ddpg pendulum env" />
-    <option name="LAST_COMMIT_MESSAGE" value="ddpg pendulum env" />
+    <MESSAGE value="atari!" />
+    <option name="LAST_COMMIT_MESSAGE" value="atari!" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/sampling method/PER/per.py" />
@@ -402,8 +408,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/atari/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="121" lean-forward="true" selection-start-line="121" selection-end-line="121" />
+        <state relative-caret-position="345">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
