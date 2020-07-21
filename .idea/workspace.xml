@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b656ab7f-6811-40ba-9932-db0289671e8f" name="Default Changelist" comment="" />
+    <list default="true" id="b656ab7f-6811-40ba-9932-db0289671e8f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -9,7 +11,32 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/atari/wrappers.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="319">
+              <caret line="281" column="14" lean-forward="true" selection-start-line="281" selection-start-column="14" selection-end-line="281" selection-end-column="14" />
+              <folding>
+                <element signature="e#118#136#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/atari/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="296">
+              <caret line="121" lean-forward="true" selection-start-line="121" selection-end-line="121" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -35,6 +62,10 @@
         <option value="$PROJECT_DIR$/value based/dueling_dqn/dueling_dqn.py" />
         <option value="$PROJECT_DIR$/policy based/ddpg/ddpg.py" />
         <option value="$PROJECT_DIR$/policy based/ddpg/pendulum/ddpg.py" />
+        <option value="$PROJECT_DIR$/value based/ape-x dqn.py" />
+        <option value="$PROJECT_DIR$/value based/apex_dqn/apex.py" />
+        <option value="$PROJECT_DIR$/atari/wrappers.py" />
+        <option value="$PROJECT_DIR$/atari/main.py" />
       </list>
     </option>
   </component>
@@ -43,18 +74,6 @@
     <exe-path />
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
-  </component>
-  <component name="ProjectConfigurationFiles">
-    <option name="files">
-      <list>
-        <option value="$PROJECT_DIR$/.idea/reinforcement.iml" />
-        <option value="$PROJECT_DIR$/.idea/misc.xml" />
-        <option value="$PROJECT_DIR$/.idea/modules.xml" />
-        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
-        <option value="$PROJECT_DIR$/.idea/libraries/R_User_Library.xml" />
-        <option value="$PROJECT_DIR$/.idea/dictionaries/jiseonghan.xml" />
-      </list>
-    </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="9" />
@@ -77,48 +96,7 @@
             <path>
               <item name="reinforcement" type="b2602c69:ProjectViewProjectNode" />
               <item name="reinforcement" type="462c0819:PsiDirectoryNode" />
-              <item name="policy based" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="reinforcement" type="b2602c69:ProjectViewProjectNode" />
-              <item name="reinforcement" type="462c0819:PsiDirectoryNode" />
-              <item name="policy based" type="462c0819:PsiDirectoryNode" />
-              <item name="ddpg" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="reinforcement" type="b2602c69:ProjectViewProjectNode" />
-              <item name="reinforcement" type="462c0819:PsiDirectoryNode" />
-              <item name="policy based" type="462c0819:PsiDirectoryNode" />
-              <item name="ddpg" type="462c0819:PsiDirectoryNode" />
-              <item name="pendulum" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="reinforcement" type="b2602c69:ProjectViewProjectNode" />
-              <item name="reinforcement" type="462c0819:PsiDirectoryNode" />
-              <item name="sampling method" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="reinforcement" type="b2602c69:ProjectViewProjectNode" />
-              <item name="reinforcement" type="462c0819:PsiDirectoryNode" />
               <item name="value based" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="reinforcement" type="b2602c69:ProjectViewProjectNode" />
-              <item name="reinforcement" type="462c0819:PsiDirectoryNode" />
-              <item name="value based" type="462c0819:PsiDirectoryNode" />
-              <item name="c51" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="reinforcement" type="b2602c69:ProjectViewProjectNode" />
-              <item name="reinforcement" type="462c0819:PsiDirectoryNode" />
-              <item name="value based" type="462c0819:PsiDirectoryNode" />
-              <item name="ddqn" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="reinforcement" type="b2602c69:ProjectViewProjectNode" />
-              <item name="reinforcement" type="462c0819:PsiDirectoryNode" />
-              <item name="value based" type="462c0819:PsiDirectoryNode" />
-              <item name="dueling_dqn" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -128,6 +106,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -168,6 +147,9 @@
       <workItem from="1593763697281" duration="8201000" />
       <workItem from="1594015185619" duration="6279000" />
       <workItem from="1594625572170" duration="6625000" />
+      <workItem from="1594711667848" duration="11000" />
+      <workItem from="1595227363823" duration="175000" />
+      <workItem from="1595309101723" duration="2859000" />
     </task>
     <task id="LOCAL-00001" summary="dueling_dqn -&gt; need update">
       <created>1593355279550</created>
@@ -229,12 +211,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25230000" />
+    <option name="totallyTimeSpent" value="28275000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="877" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17811158" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18454936" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -249,7 +232,7 @@
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3299363" />
-      <window_info anchor="bottom" id="Python Console" order="12" weight="0.3299363" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="12" visible="true" weight="0.3299363" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -378,16 +361,6 @@
     <entry file="file://$PROJECT_DIR$/policy based/ddpg/config.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/value based/ddqn/ddqn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="90" column="26" lean-forward="true" selection-start-line="90" selection-start-column="26" selection-end-line="90" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/policy based/ddpg/pendulum/ddpg.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
@@ -402,6 +375,38 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
           <caret line="55" column="32" selection-start-line="55" selection-start-column="31" selection-end-line="55" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/value based/ape-x dqn.py" />
+    <entry file="file://$PROJECT_DIR$/value based/apex_dqn/apex.py" />
+    <entry file="file://$PROJECT_DIR$/value based/ddqn/ddqn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="80" column="18" selection-end-line="117" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/atari/wrappers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="319">
+          <caret line="281" column="14" lean-forward="true" selection-start-line="281" selection-start-column="14" selection-end-line="281" selection-end-column="14" />
+          <folding>
+            <element signature="e#118#136#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/atari/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="296">
+          <caret line="121" lean-forward="true" selection-start-line="121" selection-end-line="121" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
