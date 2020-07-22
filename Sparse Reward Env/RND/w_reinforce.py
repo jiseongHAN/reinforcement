@@ -1,11 +1,44 @@
 import numpy as np
 import torch
 import torch.nn as nn
-from collections import deque
 import torch.optim as optim
-import random
 import gym
 from torch.distributions import Categorical
+
+
+class RNetwork(nn.Module):
+    def __init__(self, n_input):
+        super(RNetwork, self).__init__()
+        self.pred = nn.Sequential(
+            nn.Linear(n_input, 128),
+            nn.ReLU(),
+            nn.Linear(128, 128),
+            nn.ReLU(),
+            nn.Linear(128, 1),
+        )
+        self.target = nn.Sequential(
+            nn.Linear(n_input, 128),
+            nn.ReLU(),
+            nn.Linear(128, 128),
+            nn.ReLU(),
+            nn.Linear(128, 1),
+        )
+        self.target.apply(self.random_init)
+
+    def random_init(self, m): # for target_network
+        if type(m) == nn.Linear:
+            nn.init.orthogonal_(m.weight)
+
+    def forward(self,x):
+        if type(x) != torch.Tensor:
+            x = torch.FloatTensor(x)
+        pred = self.pred(x)
+        target = self.target(x)
+        return pred, target
+
+
+
+
 
 class mlp(nn.Module):
     def __init__(self,n_obs,n_action):
@@ -39,6 +72,10 @@ def init_weights(m):
 
 
 
+def get_int(pred, target):
+    mse = nn.MSELoss()
+    loss_r = mse(target.detach(),pred)
+    return float(loss_r)
 
 def cal_returns(r_lst, gamma):
     ret_lst = []
@@ -51,46 +88,64 @@ def cal_returns(r_lst, gamma):
     return ret_lst
 
 
-def train(log_prob_lst, reward_lst, gamma, optimizer):
-    t_ret = cal_returns(reward_lst,gamma)
+def train(log_prob_lst, re_lst, ri_lst, ent_lst, gamma, optimizer, net_lst, opt):
+    ri = [(i - np.mean(ri_lst))/np.mean(i) for i in ri_lst]
+    r = [(2* i) + j for i,j in zip(re_lst,ri)]
+    t_ret = cal_returns(r,gamma)
+    # t_ret = cal_returns(re_lst,gamma)
 
     loss = 0
+    loss_r = 0
     for i in range(len(t_ret)):
-        loss += t_ret[i] * log_prob_lst[i]
-
-    loss = -loss
+        loss -= t_ret[i] * log_prob_lst[i] + 0.0001 * ent_lst[i]
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
-    return loss
-
+    mse = nn.MSELoss()
+    for i in range(len(net_lst)):
+        loss_r +=  mse(net_lst[i][1].detach(),net_lst[i][0])
+    opt.zero_grad()
+    loss_r.backward()
+    opt.step()
 
 def main():
-    gamma = 0.99
-    env = gym.make('MountainCar-v0')
-    epoch = 1000
+    gamma = 0.98
+    env = gym.make("CartPole-v1")
+    epoch = 10000
     q = mlp(env.observation_space.shape[0],env.action_space.n)
-    optimizer = optim.Adam(q.parameters(),lr=0.0005)
+    net = RNetwork(env.observation_space.shape[0])
+    opt = optim.Adam(net.pred.parameters(),lr=0.00025)
+    optimizer = optim.Adam(q.parameters(),lr=0.00025)
+    see = []
     for i in range(epoch):
-        reward_lst = []
+        ri_lst = []
+        re_lst = []
         log_prob_lst = []
         s = env.reset()
         done = False
         total_score = 0
-
-
+        ext_score = 0
+        net_lst = []
+        ent_lst = []
         while not done:
+            # env.render()
             m = Categorical(q(s))
             a = m.sample()
-            s_prime, r, done, _ = env.step(int(a))
+            s_prime, ri, done, _ = env.step(int(a))
+            pred, target = net(s_prime)
+            re = get_int(pred,target)
+            net_lst.append((pred,target))
             s = s_prime
-            total_score += r
-
-            reward_lst.append(r)
+            total_score += ri
+            ext_score += re
+            ent_lst.append(m.entropy())
+            re_lst.append(np.clip(re,-1,1))
+            ri_lst.append(ri)
             log_prob_lst.append(m.log_prob(a))
 
-        loss = train(log_prob_lst, reward_lst, gamma, optimizer)
-        print("Epoch : %d | score : %f | loss : %f" %(i, total_score,loss))
+        train(log_prob_lst, re_lst, ri_lst, ent_lst ,gamma, optimizer,net_lst,opt)
+        print("Epoch : %d | score : %f | r_i : %f" %(i, total_score,ext_score))
+        see.append(total_score)
 
 
 
