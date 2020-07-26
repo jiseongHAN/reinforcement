@@ -1,10 +1,11 @@
-from atari.wrappers import *
+from wrappers import *
 import numpy as np
 import torch
 import torch.nn as nn
 from collections import deque
 import torch.optim as optim
 import random
+import torch.multiprocessing as mp
 
 '''
 initialize replay memory D with N
@@ -34,31 +35,37 @@ class replay_memory(object):
 
 
 class mlp(nn.Module):
-    def __init__(self,n_frame,n_action):
+    def __init__(self,n_frame,n_action, device):
         super(mlp,self).__init__()
         self.layer1 = nn.Conv2d(n_frame, 32, 8, 4)
         self.layer2 = nn.Conv2d(32,64, 3,1)
         self.fc = nn.Linear(20736,512)
         self.q = nn.Linear(512, n_action)
+        self.v = nn.Linear(512, 1)
 
+        self.device = device
         self.seq = nn.Sequential(
             self.layer1,
             self.layer2,
             self.fc,
-            self.q
+            self.q,
+            self.v
         )
 
         self.seq.apply(init_weights)
 
     def forward(self,x):
         if type(x) != torch.Tensor:
-            x = torch.FloatTensor(x)
+            x = torch.FloatTensor(x).to(self.device)
         x = torch.relu(self.layer1(x))
         x = torch.relu(self.layer2(x))
         x = x.view(-1,20736)
         x = torch.relu(self.fc(x))
-        x = self.q(x)
-        return x
+        adv = self.q(x)
+        v = self.v(x)
+        q = v + (adv - 1/adv.shape[-1] * adv.max(-1,True)[0])
+
+        return q
 
 
 def init_weights(m):
@@ -67,61 +74,90 @@ def init_weights(m):
         m.bias.data.fill_(0.01)
 
 
-def train(q, q_target, memory, batch_size, gamma, optimizer):
+def train(q, q_target, memory, batch_size, gamma, optimizer, device):
+    ce = nn.MSELoss()
     s,r,a,s_prime,done = list(map(list, zip(*memory.sample(batch_size))))
     s = np.array(s).squeeze()
     s_prime = np.array(s_prime).squeeze()
     a_max = q(s_prime).max(1)[1].unsqueeze(-1)
-    y = torch.FloatTensor(r).unsqueeze(-1) + gamma*q_target(s_prime).gather(1,a_max)*torch.FloatTensor(done).unsqueeze(-1)
-    a = torch.tensor(a).unsqueeze(-1)
-    loss = torch.sum((y - q(s).gather(1,a))**2)
+    r = torch.FloatTensor(r).unsqueeze(-1).to(device)
+    done = torch.FloatTensor(done).unsqueeze(-1).to(device)
+    y = r + gamma*q_target(s_prime).gather(1,a_max)*done
+    a = torch.tensor(a).unsqueeze(-1).to(device)
+    loss = ce(y, q(s).gather(1,a))
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
+    return loss
 
 def copy_weights(q,q_target):
     q_dict = q.state_dict()
     q_target.load_state_dict(q_dict)
 
-def main():
+
+
+
+def main(q,q_target, optimizer ,device, i):
+    t = 0
     gamma = 0.99
-    batch_size = 64
-    n_frame = 4
-    env = FrameStack(ScaledFloatFrame(WarpFrame(make_atari('BreakoutNoFrameskip-v0'))), n_frame)
-    N = 10000
+    batch_size = 128
+    # env = FrameStack(ScaledFloatFrame(WarpFrame(make_atari('BreakoutNoFrameskip-v0'))), n_frame)
+    env = wrap_deepmind(gym.make('Breakout-v0'))
+
+    N = 50000
     eps = 0.001
     memory = replay_memory(N)
-    epoch = 1000
     update_interval = 50
-    q = mlp(n_frame,env.action_space.n)
-    q_target = mlp(n_frame,env.action_space.n)
-    optimizer = optim.Adam(q.parameters(),lr=0.0005)
-    t = 0
-    for k in range(epoch):
+
+
+
+    for k in range(1000000):
         s = arange(env.reset())
         done = False
         total_score = 0
-
+        loss = 0.0
         while not done:
             if eps > np.random.rand():
                 a = env.action_space.sample()
             else:
-                a = np.argmax(q(s).detach().numpy())
+                if device == 'cpu':
+                    a = np.argmax(q(s).detach().numpy())
+                else:
+                    a = np.argmax(q(s).cpu().detach().numpy())
             s_prime, r, done, _ = env.step(a)
             s_prime = arange(s_prime)
             memory.push((s,float(r),int(a),s_prime,int(1-done)))
             s = s_prime
             total_score += r
             if len(memory) > 2000:
-                train(q,q_target,memory,batch_size,gamma,optimizer)
+                loss = train(q,q_target,memory,batch_size,gamma,optimizer,device)
                 t += 1
             if t % update_interval == 0:
                 copy_weights(q,q_target)
-        print("Epoch : %d | score : %f" %(k, total_score))
+        if i == 1:
+            print("%s |Epoch : %d | score : %f | loss : %.2f" %(device, k, total_score, loss))
 
 
 
 if __name__ ==  "__main__":
-    main()
+    n_frame = 4
+    env = wrap_deepmind(gym.make('Breakout-v0'))
+    device = 'cuda:1' if torch.cuda.is_available() else 'cpu'
+    q = mlp(n_frame,env.action_space.n,device).to(device)
+    q_target = mlp(n_frame,env.action_space.n,device).to(device)
+    optimizer = optim.Adam(q.parameters(),lr=0.0001)
+
+    q.share_memory()  # Required for 'fork' method to work
+    q_target.share_memory()
+    processes = []
+    mp.set_start_method('spawn')
+
+    for i in range(4):  # No. of processes
+        p = mp.Process(target=main, args=(q,q_target,optimizer, device,i))
+        p.start()
+        processes.append(p)
+
+    for p in processes: p.join()
+
 
 
