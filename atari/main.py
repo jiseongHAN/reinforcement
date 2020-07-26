@@ -6,6 +6,7 @@ from collections import deque
 import torch.optim as optim
 import random
 import torch.multiprocessing as mp
+import torch.nn.functional as F
 
 '''
 initialize replay memory D with N
@@ -75,16 +76,19 @@ def init_weights(m):
 
 
 def train(q, q_target, memory, batch_size, gamma, optimizer, device):
-    ce = nn.MSELoss()
+    # ce = nn.MSELoss()
     s,r,a,s_prime,done = list(map(list, zip(*memory.sample(batch_size))))
     s = np.array(s).squeeze()
     s_prime = np.array(s_prime).squeeze()
     a_max = q(s_prime).max(1)[1].unsqueeze(-1)
     r = torch.FloatTensor(r).unsqueeze(-1).to(device)
     done = torch.FloatTensor(done).unsqueeze(-1).to(device)
-    y = r + gamma*q_target(s_prime).gather(1,a_max)*done
+    with torch.no_grad():
+        y = r + gamma*q_target(s_prime).gather(1,a_max)*done
     a = torch.tensor(a).unsqueeze(-1).to(device)
-    loss = ce(y, q(s).gather(1,a))
+    qq = torch.gather(q(s), dim=1, index=a.view(-1, 1).long())
+
+    loss = F.smooth_l1_loss(qq,y).sum()
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
