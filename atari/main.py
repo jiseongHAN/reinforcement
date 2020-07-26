@@ -142,7 +142,7 @@ def main(q,q_target, optimizer ,device, i):
 if __name__ ==  "__main__":
     n_frame = 4
     env = wrap_deepmind(gym.make('Breakout-v0'))
-    device = 'cuda:1' if torch.cuda.is_available() else 'cpu'
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
     q = mlp(n_frame,env.action_space.n,device).to(device)
     q_target = mlp(n_frame,env.action_space.n,device).to(device)
     optimizer = optim.Adam(q.parameters(),lr=0.0001)
