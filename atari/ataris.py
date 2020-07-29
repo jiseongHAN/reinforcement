@@ -7,6 +7,7 @@ import torch.optim as optim
 import random
 import torch.multiprocessing as mp
 import torch.nn.functional as F
+import pickle
 
 '''
 initialize replay memory D with N
@@ -113,7 +114,7 @@ def main(env, q,q_target, optimizer ,device, i):
     memory = replay_memory(N)
     update_interval = 50
 
-
+    score_lst = []
 
     for k in range(1000000):
         s = arange(env.reset())
@@ -139,6 +140,10 @@ def main(env, q,q_target, optimizer ,device, i):
                 t += 1
             if t % update_interval == 0:
                 copy_weights(q,q_target)
+                torch.save(q.state_dict(), 'q.pth')
+                torch.save(q_target.state_dict(), 'q_target.pth')
+                pickle.dump(score_lst, open('score.p', 'wb'))
+
         if i == 1:
             print("%s |Epoch : %d | score : %f | loss : %.2f" %(device, k, total_score, loss))
 
