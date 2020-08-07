@@ -1,9 +1,0 @@
-env = 'CarRacing-v0'
-hidden = 512
-tau = 0.005
-c_lr = 0.001
-a_lr = 0.0005
-len = 100000
-batch_size = 64
-epoch = 50
-gamma = 0.95
