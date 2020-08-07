@@ -11,6 +11,7 @@
 #### 2-2 PPO with Atari Environment : Done
 
 ### 3. [Deep Deterministic Policy Gradient](https://arxiv.org/pdf/1509.02971.pdf) : Pendulum Env Done
+### 4. [Twin Delayed Deep Determenistic Policy Gradient (TD3)](https://arxiv.org/pdf/1802.09477.pdf) : Done
 
 ## Value Based
 
