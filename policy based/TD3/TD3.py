@@ -7,9 +7,6 @@ import torch.optim as optim
 import random
 import torch.nn.functional as F
 
-
-env = gym.make('CartPole-v1').unwrapped
-
 '''
 initialize replay memory D with N
 '''
@@ -50,6 +47,7 @@ class critic(nn.Module):
     def forward(self,x,a):
         if type(x) != torch.Tensor:
             x = torch.FloatTensor(x)
+        if type(a) != torch.Tensor:
             a = torch.FloatTensor(a).unsqueeze(1)
 
         x = F.relu(self.layer_q(x))
@@ -96,82 +94,90 @@ def soft_copy_weights(net,net_target,tau):
     for param_target, param in zip(net_target.parameters(), net.parameters()):
         param_target.data.copy_(param_target.data * (1.0 - tau) + param.data * tau)
 
+def cliped_noise(sigma,c=3):
+    noise = np.random.normal(0, sigma)
+    return np.clip(noise,-c,c)
 
 
-
-def train(act, act_target, crt, crt_target, memory, batch_size, gamma, actor_optimizer, critic_optimizer):
+def train(act, act_target, crt1, crt2, crt1_target, crt2_target, memory, batch_size, gamma, actor_optimizer, critic1_optimizer,critic2_optimizer):
+    # ce = nn.MSELoss()
     s, r, a, s_prime, done = list(map(list, zip(*memory.sample(batch_size))))
-    y = torch.FloatTensor(r).unsqueeze(-1) + gamma * crt_target(s_prime,act_target(s_prime).squeeze()) * torch.FloatTensor(done).unsqueeze(-1)
-    critic_loss = torch.mean((y - crt(s,a))**2)
-    actor_loss = -torch.mean(crt(s, act(torch.FloatTensor(s) ).squeeze()  ))
 
-    critic_optimizer.zero_grad()
-    critic_loss.backward()
-    critic_optimizer.step()
+    r = torch.FloatTensor(r).unsqueeze(-1)
+    done = torch.FloatTensor(done).unsqueeze(-1)
+
+    with torch.no_grad():
+        y1 = r + gamma * crt1_target(s_prime,act(s_prime)) * done
+        y2 = r + gamma * crt2_target(s_prime,act(s_prime)) * done
+
+    y = torch.min(y1,y2)
+
+    # qq = torch.gather(q(s), dim=1, index=a.view(-1, 1).long())
+
+    q1 = crt1(s,a)
+    q2 = crt2(s,a)
+
+    critic1_loss = F.smooth_l1_loss(q1, y).mean()
+    critic2_loss = F.smooth_l1_loss(q2, y).mean()
+
+    actor_loss = -crt1(s,act(s)).mean()
+
+    critic1_optimizer.zero_grad()
+    critic1_loss.backward()
+    critic1_optimizer.step()
+
+    critic2_optimizer.zero_grad()
+    critic2_loss.backward()
+    critic2_optimizer.step()
 
     actor_optimizer.zero_grad()
     actor_loss.backward()
     actor_optimizer.step()
 
-# Based on http://math.stackexchange.com/questions/1287634/implementing-ornstein-uhlenbeck-in-matlab
-class OrnsteinUhlenbeckActionNoise():
-    def __init__(self, mu, sigma, theta=.15, dt=1e-2, x0=None):
-        self.theta = theta
-        self.mu = mu
-        self.sigma = sigma
-        self.dt = dt
-        self.x0 = x0
-        self.reset()
-
-    def __call__(self):
-        x = self.x_prev + self.theta * (self.mu - self.x_prev) * self.dt + self.sigma * np.sqrt(self.dt) * np.random.normal(size=self.mu.shape)
-        self.x_prev = x
-        return x
-
-    def reset(self):
-        self.x_prev = self.x0 if self.x0 is not None else np.zeros_like(self.mu)
-
-    def __repr__(self):
-        return 'OrnsteinUhlenbeckActionNoise(mu={}, sigma={})'.format(self.mu, self.sigma)
-
+    return float(actor_loss)
 
 
 def main():
-    gamma = 0.99
-    batch_size = 64
     env = gym.make("Pendulum-v0")
-    N = 10000
-    eps = 0.001
+    gamma = 0.99
+    batch_size = 32
+    N = 50000
     memory = replay_memory(N)
     epoch = 1000
-    update_interval = 4
-    crt = critic(env.observation_space.shape[0])
-    crt_target = critic(env.observation_space.shape[0])
+    sigma = 0.1
+    crt1 = critic(env.observation_space.shape[0])
+    crt1_target = critic(env.observation_space.shape[0])
+    crt1_target.load_state_dict(crt1.state_dict())
+
+    crt2 = critic(env.observation_space.shape[0])
+    crt2_target = critic(env.observation_space.shape[0])
+    crt2_target.load_state_dict(crt2.state_dict())
+
+
     act = actor(env.observation_space.shape[0], env.action_space.shape[0])
     act_target = actor(env.observation_space.shape[0], env.action_space.shape[0])
-    critic_optimizer = optim.Adam(crt.parameters(), lr=0.0005)
-    actor_optimizer = optim.Adam(act.parameters(), lr=0.0005)
-    OU = OrnsteinUhlenbeckActionNoise(mu=np.zeros(1), sigma=float(1) * np.ones(1))
+    act_target.load_state_dict(act.state_dict())
 
+    critic1_optimizer = optim.Adam(crt1.parameters(), lr=0.0005)
+    critic2_optimizer = optim.Adam(crt2.parameters(), lr=0.0005)
+    actor_optimizer = optim.Adam(act.parameters(), lr=0.001)
+    loss = 0.0
     for k in range(epoch):
         s = env.reset()
         done = False
         total_score = 0
-
         while not done:
-            if eps > np.random.rand():
-                a = env.action_space.sample()
-            else:
-                a = np.clip(act(s).detach().numpy()+ OU(),env.action_space.low, env.action_space.high)
+            a = np.clip(act(s).detach().numpy()+ cliped_noise(sigma),-2,2)
             s_prime, r, done, _ = env.step(a)
             memory.push((list(s), float(r), int(a), list(s_prime), int(1 - done)))
             s = s_prime
             total_score += r
             if len(memory) > 2000:
-                train(act, act_target, crt, crt_target, memory, batch_size, gamma, actor_optimizer,critic_optimizer)
-                soft_copy_weights(crt, crt_target,0.01)
-                soft_copy_weights(act, act_target, 0.01)
-        print("Epoch : %d | score : %f" % (k, total_score))
+                loss = train(act, act_target, crt1, crt2, crt1_target, crt2_target, memory, batch_size, gamma, actor_optimizer, critic1_optimizer,critic2_optimizer)
+                soft_copy_weights(crt1, crt1_target,0.005)
+                soft_copy_weights(crt2, crt2_target,0.005)
+                soft_copy_weights(act, act_target, 0.005)
+        print("Epoch : %d | score : %f | loss : %4f" % (k, total_score, loss))
 
 
 
