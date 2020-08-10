@@ -18,7 +18,7 @@
 ### 1. [Deep Q-Learning](https://web.stanford.edu/class/psych209/Readings/MnihEtAlHassibis15NatureControlDeepRL.pdf) : Done
 ### 2. [Dobule DQN](https://arxiv.org/pdf/1509.06461.pdf) : Done
 ### 3. [Dueling DQN](https://arxiv.org/pdf/1511.06581.pdf) : Done
-### 4. [C51](https://arxiv.org/pdf/1707.06887.pdf) : Done
+### 4. [C51](https://arxiv.org/pdf/1707.06887.pdf) : need fix
 ### 5. [Ape-X DQN](https://openreview.net/pdf?id=H1Dy---0Z)
 
 ## Sampling Method
