@@ -99,17 +99,18 @@ def cliped_noise(sigma,c=3):
     return np.clip(noise,-c,c)
 
 
-def train(act, crt1, crt2, crt1_target, crt2_target, memory, batch_size, gamma, actor_optimizer, critic1_optimizer,critic2_optimizer):
+def train(act, act_target, crt1, crt2, crt1_target, crt2_target, memory, batch_size, gamma, actor_optimizer, critic1_optimizer,critic2_optimizer):
     s, r, a, s_prime, done = list(map(list, zip(*memory.sample(batch_size))))
 
-    a = np.clip(a+ cliped_noise(sigma=0.1),-2,2) # a tilde
+    with torch.no_grad():
+        a_tilde = torch.clamp(act_target(s_prime)+ cliped_noise(sigma=0.1),-2,2)
 
     r = torch.FloatTensor(r).unsqueeze(-1)
     done = torch.FloatTensor(done).unsqueeze(-1)
 
     with torch.no_grad():
-        y1 = r + gamma * crt1_target(s_prime,act(s_prime)) * done
-        y2 = r + gamma * crt2_target(s_prime,act(s_prime)) * done
+        y1 = r + gamma * crt1_target(s_prime,a_tilde) * done
+        y2 = r + gamma * crt2_target(s_prime,a_tilde) * done
 
     y = torch.min(y1,y2)
 
@@ -172,7 +173,7 @@ def main():
             s = s_prime
             total_score += r
             if len(memory) > 2000:
-                loss = train(act, crt1, crt2, crt1_target, crt2_target, memory, batch_size, gamma, actor_optimizer, critic1_optimizer,critic2_optimizer)
+                loss = train(act, act_target, crt1, crt2, crt1_target, crt2_target, memory, batch_size, gamma, actor_optimizer, critic1_optimizer,critic2_optimizer)
                 soft_copy_weights(crt1, crt1_target,0.005)
                 soft_copy_weights(crt2, crt2_target,0.005)
                 soft_copy_weights(act, act_target, 0.005)
