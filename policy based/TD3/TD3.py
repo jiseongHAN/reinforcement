@@ -99,9 +99,10 @@ def cliped_noise(sigma,c=3):
     return np.clip(noise,-c,c)
 
 
-def train(act, act_target, crt1, crt2, crt1_target, crt2_target, memory, batch_size, gamma, actor_optimizer, critic1_optimizer,critic2_optimizer):
-    # ce = nn.MSELoss()
+def train(act, crt1, crt2, crt1_target, crt2_target, memory, batch_size, gamma, actor_optimizer, critic1_optimizer,critic2_optimizer):
     s, r, a, s_prime, done = list(map(list, zip(*memory.sample(batch_size))))
+
+    a = np.clip(a+ cliped_noise(sigma=0.1),-2,2) # a tilde
 
     r = torch.FloatTensor(r).unsqueeze(-1)
     done = torch.FloatTensor(done).unsqueeze(-1)
@@ -112,15 +113,11 @@ def train(act, act_target, crt1, crt2, crt1_target, crt2_target, memory, batch_s
 
     y = torch.min(y1,y2)
 
-    # qq = torch.gather(q(s), dim=1, index=a.view(-1, 1).long())
-
     q1 = crt1(s,a)
     q2 = crt2(s,a)
 
     critic1_loss = F.smooth_l1_loss(q1, y).mean()
     critic2_loss = F.smooth_l1_loss(q2, y).mean()
-
-    actor_loss = -crt1(s,act(s)).mean()
 
     critic1_optimizer.zero_grad()
     critic1_loss.backward()
@@ -129,6 +126,8 @@ def train(act, act_target, crt1, crt2, crt1_target, crt2_target, memory, batch_s
     critic2_optimizer.zero_grad()
     critic2_loss.backward()
     critic2_optimizer.step()
+
+    actor_loss = -crt1(s,act(s)).mean()
 
     actor_optimizer.zero_grad()
     actor_loss.backward()
@@ -167,13 +166,13 @@ def main():
         done = False
         total_score = 0
         while not done:
-            a = np.clip(act(s).detach().numpy()+ cliped_noise(sigma),-2,2)
+            a = act(s).detach().numpy()+ np.random.normal(0, 0.1)
             s_prime, r, done, _ = env.step(a)
             memory.push((list(s), float(r), int(a), list(s_prime), int(1 - done)))
             s = s_prime
             total_score += r
             if len(memory) > 2000:
-                loss = train(act, act_target, crt1, crt2, crt1_target, crt2_target, memory, batch_size, gamma, actor_optimizer, critic1_optimizer,critic2_optimizer)
+                loss = train(act, crt1, crt2, crt1_target, crt2_target, memory, batch_size, gamma, actor_optimizer, critic1_optimizer,critic2_optimizer)
                 soft_copy_weights(crt1, crt1_target,0.005)
                 soft_copy_weights(crt2, crt2_target,0.005)
                 soft_copy_weights(act, act_target, 0.005)
