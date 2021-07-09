@@ -103,7 +103,7 @@ def train(act, act_target, crt1, crt2, crt1_target, crt2_target, memory, batch_s
     s, r, a, s_prime, done = list(map(list, zip(*memory.sample(batch_size))))
 
     with torch.no_grad():
-        a_tilde = act_target(s_prime)+ cliped_noise(sigma=0.2)
+        a_tilde = act_target(s_prime)+ cliped_noise()
 
     r = torch.FloatTensor(r).unsqueeze(-1)
     done = torch.FloatTensor(done).unsqueeze(-1)
@@ -143,7 +143,7 @@ def main():
     N = 50000
     memory = replay_memory(N)
     epoch = 1000
-    sigma = 0.1
+    sigma = 0.2
     crt1 = critic(env.observation_space.shape[0])
     crt1_target = critic(env.observation_space.shape[0])
     crt1_target.load_state_dict(crt1.state_dict())
@@ -167,7 +167,7 @@ def main():
         done = False
         total_score = 0
         while not done:
-            a = act(s).detach().numpy()+ np.random.normal(0, 0.2)
+            a = act(s).detach().numpy()+ np.random.normal(0, sigma)
             s_prime, r, done, _ = env.step(a)
             memory.push((list(s), float(r), int(a), list(s_prime), int(1 - done)))
             s = s_prime
