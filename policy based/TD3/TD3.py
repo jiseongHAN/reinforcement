@@ -94,33 +94,31 @@ def soft_copy_weights(net,net_target,tau):
     for param_target, param in zip(net_target.parameters(), net.parameters()):
         param_target.data.copy_(param_target.data * (1.0 - tau) + param.data * tau)
 
-def cliped_noise(sigma,c=3):
+def cliped_noise(sigma=0.2,c=0.5):
     noise = np.random.normal(0, sigma)
     return np.clip(noise,-c,c)
 
 
-def train(act, act_target, crt1, crt2, crt1_target, crt2_target, memory, batch_size, gamma, actor_optimizer, critic1_optimizer,critic2_optimizer):
-    # ce = nn.MSELoss()
+def train(act, act_target, crt1, crt2, crt1_target, crt2_target, memory, batch_size, gamma, actor_optimizer, critic1_optimizer,critic2_optimizer, updated_num):
     s, r, a, s_prime, done = list(map(list, zip(*memory.sample(batch_size))))
+
+    with torch.no_grad():
+        a_tilde = act_target(s_prime)+ cliped_noise()
 
     r = torch.FloatTensor(r).unsqueeze(-1)
     done = torch.FloatTensor(done).unsqueeze(-1)
 
     with torch.no_grad():
-        y1 = r + gamma * crt1_target(s_prime,act(s_prime)) * done
-        y2 = r + gamma * crt2_target(s_prime,act(s_prime)) * done
+        y1 = r + gamma * crt1_target(s_prime,a_tilde) * done
+        y2 = r + gamma * crt2_target(s_prime,a_tilde) * done
 
     y = torch.min(y1,y2)
-
-    # qq = torch.gather(q(s), dim=1, index=a.view(-1, 1).long())
 
     q1 = crt1(s,a)
     q2 = crt2(s,a)
 
     critic1_loss = F.smooth_l1_loss(q1, y).mean()
     critic2_loss = F.smooth_l1_loss(q2, y).mean()
-
-    actor_loss = -crt1(s,act(s)).mean()
 
     critic1_optimizer.zero_grad()
     critic1_loss.backward()
@@ -130,21 +128,22 @@ def train(act, act_target, crt1, crt2, crt1_target, crt2_target, memory, batch_s
     critic2_loss.backward()
     critic2_optimizer.step()
 
-    actor_optimizer.zero_grad()
-    actor_loss.backward()
-    actor_optimizer.step()
+    if updated_num % 4 == 0:
+        actor_loss = -crt1(s,act(s)).mean()
 
-    return float(actor_loss)
+        actor_optimizer.zero_grad()
+        actor_loss.backward()
+        actor_optimizer.step()
 
 
 def main():
     env = gym.make("Pendulum-v0")
     gamma = 0.99
-    batch_size = 32
+    batch_size = 64
     N = 50000
     memory = replay_memory(N)
     epoch = 1000
-    sigma = 0.1
+    sigma = 0.2
     crt1 = critic(env.observation_space.shape[0])
     crt1_target = critic(env.observation_space.shape[0])
     crt1_target.load_state_dict(crt1.state_dict())
@@ -158,26 +157,29 @@ def main():
     act_target = actor(env.observation_space.shape[0], env.action_space.shape[0])
     act_target.load_state_dict(act.state_dict())
 
-    critic1_optimizer = optim.Adam(crt1.parameters(), lr=0.0005)
-    critic2_optimizer = optim.Adam(crt2.parameters(), lr=0.0005)
-    actor_optimizer = optim.Adam(act.parameters(), lr=0.001)
-    loss = 0.0
+    critic1_optimizer = optim.Adam(crt1.parameters(), lr=0.0003)
+    critic2_optimizer = optim.Adam(crt2.parameters(), lr=0.0003)
+    actor_optimizer = optim.Adam(act.parameters(), lr=0.0003)
+    updated_num = 0
+
     for k in range(epoch):
         s = env.reset()
         done = False
         total_score = 0
         while not done:
-            a = np.clip(act(s).detach().numpy()+ cliped_noise(sigma),-2,2)
+            a = act(s).detach().numpy()+ np.random.normal(0, sigma)
             s_prime, r, done, _ = env.step(a)
             memory.push((list(s), float(r), int(a), list(s_prime), int(1 - done)))
             s = s_prime
             total_score += r
             if len(memory) > 2000:
-                loss = train(act, act_target, crt1, crt2, crt1_target, crt2_target, memory, batch_size, gamma, actor_optimizer, critic1_optimizer,critic2_optimizer)
-                soft_copy_weights(crt1, crt1_target,0.005)
-                soft_copy_weights(crt2, crt2_target,0.005)
-                soft_copy_weights(act, act_target, 0.005)
-        print("Epoch : %d | score : %f | loss : %4f" % (k, total_score, loss))
+                updated_num += 1
+                train(act, act_target, crt1, crt2, crt1_target, crt2_target, memory, batch_size, gamma, actor_optimizer, critic1_optimizer,critic2_optimizer, updated_num)
+                if updated_num % 4 == 0:
+                    soft_copy_weights(crt1, crt1_target,0.005)
+                    soft_copy_weights(crt2, crt2_target,0.005)
+                    soft_copy_weights(act, act_target, 0.005)
+        print("Epoch : %d | score : %f | loss : %4f" % (k, total_score, updated_num))
 
 
 

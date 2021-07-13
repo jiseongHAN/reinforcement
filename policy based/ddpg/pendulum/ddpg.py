@@ -103,11 +103,12 @@ def train(act, act_target, crt, crt_target, memory, batch_size, gamma, actor_opt
     s, r, a, s_prime, done = list(map(list, zip(*memory.sample(batch_size))))
     y = torch.FloatTensor(r).unsqueeze(-1) + gamma * crt_target(s_prime,act_target(s_prime).squeeze()) * torch.FloatTensor(done).unsqueeze(-1)
     critic_loss = torch.mean((y - crt(s,a))**2)
-    actor_loss = -torch.mean(crt(s, act(torch.FloatTensor(s) ).squeeze()  ))
 
     critic_optimizer.zero_grad()
     critic_loss.backward()
     critic_optimizer.step()
+
+    actor_loss = -torch.mean(crt(s, act(torch.FloatTensor(s) ).squeeze()))
 
     actor_optimizer.zero_grad()
     actor_loss.backward()
